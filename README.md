@@ -15,10 +15,12 @@ This library aims to provide a common place for such conversions.
 - maven (>= 3)
 
 ## Cloning
+```shell
 git clone https://github.com/cardano-foundation/cf-cardano-conversions-java
-
-## Building
 ```
+
+## Local Building
+```shell
 cd cf-cardano-conversions-java
 mvn clean install
 ```
