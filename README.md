@@ -1,7 +1,7 @@
-# Cardano Conversions Utility
+# Cardano Conversions Utility 🚧️ Under Construction 🚧️
 
-[![Build](https://github.com/cardano-foundation/merkle-tree-java/actions/workflows/build.yml/badge.svg)](https://github.com/cardano-foundation/cf-cardano-conversions-java/actions/workflows/build.yml)
-[![License](https://img.shields.io:/github/license/cardano-foundation/merkle-tree-java?label=license)](https://github.com/cardano-foundation/cf-cardano-conversions-java/blob/master/LICENSE)
+[![Build](https://github.com/cardano-foundation/cf-cardano-conversions-java/actions/workflows/tests.yaml/badge.svg)](https://github.com/cardano-foundation/cf-cardano-conversions-java/actions/workflows/tests.yaml)
+[![License](https://img.shields.io:/github/license/cardano-foundation/cf-cardano-conversions-java?label=license)](https://github.com/cardano-foundation/cf-cardano-conversions-java/blob/master/LICENSE)
 ![Discord](https://img.shields.io/discord/1022471509173882950)
 
 ## Motivation
@@ -22,5 +22,3 @@ git clone https://github.com/cardano-foundation/cf-cardano-conversions-java
 cd cf-cardano-conversions-java
 mvn clean install
 ```
-
-## Example
