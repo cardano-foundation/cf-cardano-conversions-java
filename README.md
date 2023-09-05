@@ -22,5 +22,5 @@ git clone https://github.com/cardano-foundation/cf-cardano-conversions-java
 ## Local Building
 ```shell
 cd cf-cardano-conversions-java
-mvn clean install
+./mvnw clean install
 ```
