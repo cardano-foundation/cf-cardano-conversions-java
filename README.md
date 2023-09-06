@@ -19,6 +19,12 @@ This library aims to provide a common place for such conversions.
 git clone https://github.com/cardano-foundation/cf-cardano-conversions-java
 ```
 
+## Additional Docs
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- [SECURITY.md](SECURITY.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md)
+- [CHANGELOG.md](CHANGELOG.md)
+
 ## Local Building
 ```shell
 cd cf-cardano-conversions-java
