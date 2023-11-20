@@ -14,6 +14,9 @@
         <java.version>17</java.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <lombok.version>1.18.26</lombok.version>
+        <jackson.version>2.16.0</jackson.version>
+        <ccl.version>0.5.0</ccl.version>
+        <assertj.version>3.24.2</assertj.version>
 
         <slf4j.version>2.0.7</slf4j.version>
 
@@ -36,6 +39,30 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bloxbean.cardano</groupId>
+            <artifactId>cardano-client-crypto</artifactId>
+            <version>${ccl.version}</version>
+        </dependency>
+
         <!-- test scope -->
          <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -50,6 +77,14 @@
             <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <developers>
