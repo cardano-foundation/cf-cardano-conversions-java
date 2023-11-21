@@ -3,7 +3,7 @@ package org.cardanofoundation.conversions;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.SneakyThrows;
-import org.cardanofoundation.ConversionsConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.cardanofoundation.conversions.domain.ByronGenesis;
 import org.cardanofoundation.conversions.domain.Era;
 import org.cardanofoundation.conversions.domain.NetworkType;
@@ -13,26 +13,32 @@ import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
 
+import static java.time.ZoneOffset.UTC;
 import static org.cardanofoundation.conversions.domain.Era.Byron;
+import static org.cardanofoundation.conversions.domain.Era.Shelley;
 
+@Slf4j
 public class GenesisConfig {
 
   public static final int PREVIEW_EPOCH_LENGTH = 86400;
 
   private static final long DEFAULT_EPOCH_LENGTH = 432000; // 5 days
 
+  private final ConversionsConfig conversionsConfig;
   private final ObjectMapper objectMapper;
 
-  @Getter private String shelleyStartTime;
+  @Getter private Duration byronSlotLength;
 
-  @Getter private long byronSlotLength;
-
-  @Getter private double shelleySlotLength;
+  @Getter private Duration shelleySlotLength;
 
   @Getter private double activeSlotsCoeff;
 
-  @Getter private long cardanoNetworkStartTime;
+  @Getter
+  private long cardanoNetworkStartTime;
 
   @Getter private long shelleyEpochLength;
 
@@ -40,12 +46,48 @@ public class GenesisConfig {
 
   @Getter private long protocolNetworkMagic;
 
-  public GenesisConfig(ConversionsConfig conversionsConfig,
-                       ObjectMapper objectMapper) {
+  public GenesisConfig(ConversionsConfig conversionsConfig, ObjectMapper objectMapper) {
+    this.conversionsConfig = conversionsConfig;
     this.objectMapper = objectMapper;
 
-    parseByronGenesisFile(conversionsConfig.byronGenesisFile());
-    parseShelleyGenesisFile(conversionsConfig.shelleyGenesisFile());
+    var byronGenesis = parseByronGenesisFile(conversionsConfig.byronGenesisFile());
+    var shelleyGenesis = parseShelleyGenesisFile(conversionsConfig.shelleyGenesisFile());
+
+    var distinctProtocolMagics =
+        Stream.of(
+                byronGenesis.getProtocolMagic(),
+                shelleyGenesis.getNetworkMagic(),
+                conversionsConfig.networkType().getProtocolMagic())
+            .distinct()
+            .count();
+
+    if (distinctProtocolMagics != 1) {
+      throw new ConversionRuntimeException(
+          "Protocol magics mismatch, only one distinct networkProtocolMagic allowed!");
+    }
+  }
+
+  public LocalDateTime getStartTime() {
+    return LocalDateTime.ofInstant(Instant.ofEpochSecond(cardanoNetworkStartTime), UTC);
+  }
+
+  public LocalDateTime getShelleyStartTime() {
+    return getStartTime().plusSeconds(firstShelleySlot() * slotDuration(Byron).getSeconds());
+  }
+
+  public LocalDateTime blockTime(Era era, long slot) {
+    if (era == Byron) {
+      return byronBlockTime(slot);
+    }
+
+    var slotsFromShelleyStart = slot - firstShelleySlot();
+
+    return getShelleyStartTime()
+        .plusSeconds(slotsFromShelleyStart * slotDuration(Shelley).getSeconds());
+  }
+
+  private LocalDateTime byronBlockTime(long slot) {
+    return getStartTime().plusSeconds(slot * slotDuration(Byron).getSeconds());
   }
 
   /**
@@ -56,18 +98,10 @@ public class GenesisConfig {
    */
   public Duration slotDuration(Era era) {
     if (era == Byron) {
-      if (byronSlotLength == 0) {
-        return Duration.ofSeconds(20);
-      }
-
-      return Duration.ofSeconds(byronSlotLength);
+      return byronSlotLength;
     }
 
-    if (shelleySlotLength == 0) {
-      return Duration.ofSeconds(1);
-    }
-
-    return Duration.ofSeconds(Double.valueOf(shelleySlotLength).longValue());
+    return shelleySlotLength;
   }
 
   public long slotsPerEpoch(Era era) {
@@ -97,8 +131,11 @@ public class GenesisConfig {
   }
 
   public int firstShelleyEpochNo() {
-    // TODO make it work for all network types
-    return 208;
+    return switch (conversionsConfig.networkType()) {
+      case MAINNET -> 208;
+      case PREPROD -> 3;
+      default -> throw new ConversionRuntimeException("Network not yet supported!");
+    };
   }
 
   public long lastByronSlot() {
@@ -109,34 +146,43 @@ public class GenesisConfig {
     return lastByronSlot() + 1;
   }
 
-  private void parseByronGenesisFile(URL byronGenesisFile) {
-    var byronGenesis = getByronGenesis(byronGenesisFile);
+  private ByronGenesis parseByronGenesisFile(URL byronGenesisFile) {
+    var byronGenesis = parseByronGenesis(byronGenesisFile);
 
     cardanoNetworkStartTime = byronGenesis.getStartTime();
     byronSlotLength = byronGenesis.getByronSlotLength(); // in second
     protocolNetworkMagic = byronGenesis.getProtocolMagic();
+
+    log.debug("Cardano network start time: {}", getStartTime());
+    log.debug("Byron slot length: {}", byronSlotLength);
+    log.debug("Protocol network magic: {}", protocolNetworkMagic);
+
+    return byronGenesis;
   }
 
-  private void parseShelleyGenesisFile(URL shelleyGenesisFile) {
-    var shelleyGenesis = getShelleyGenesis(shelleyGenesisFile);
-
-    shelleyStartTime = shelleyGenesis.getSystemStart();
-    shelleySlotLength = shelleyGenesis.getSlotLength();
+  private ShelleyGenesis parseShelleyGenesisFile(URL shelleyGenesisFile) {
+    var shelleyGenesis = parseShelleyGenesis(shelleyGenesisFile);
+    shelleySlotLength = Duration.ofSeconds((int) shelleyGenesis.getSlotLength());
     activeSlotsCoeff = shelleyGenesis.getActiveSlotsCoeff();
     maxLovelaceSupply = shelleyGenesis.getMaxLovelaceSupply();
     shelleyEpochLength = shelleyGenesis.getEpochLength();
     protocolNetworkMagic = shelleyGenesis.getNetworkMagic();
+
+    log.debug("Shelley slot length: {}", shelleySlotLength);
+    log.debug("Active slots coeff: {}", activeSlotsCoeff);
+
+    return shelleyGenesis;
   }
 
   @SneakyThrows
-  private ByronGenesis getByronGenesis(URL byronGenesisFile) {
+  private ByronGenesis parseByronGenesis(URL byronGenesisFile) {
     try (InputStream inputStream = byronGenesisFile.openStream()) {
       return new ByronGenesis(inputStream, objectMapper);
     }
   }
 
   @SneakyThrows
-  private ShelleyGenesis getShelleyGenesis(URL shelleyGenesisFile) {
+  private ShelleyGenesis parseShelleyGenesis(URL shelleyGenesisFile) {
     try (InputStream inputStream = shelleyGenesisFile.openStream()) {
       return new ShelleyGenesis(inputStream, objectMapper);
     }

@@ -4,20 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.EpochOffset.END;
 import static org.cardanofoundation.conversions.domain.EpochOffset.START;
 import static org.cardanofoundation.conversions.domain.Era.Byron;
+import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.net.MalformedURLException;
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
-import org.cardanofoundation.ConversionsConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-/**
- * Sources: - https://cips.cardano.org/cips/cip59/feature-table.md.html -
- * https://cardanosolutions.github.io/kupo/#section/Rollbacks-and-chain-forks/How-Kupo-deals-with-rollbacks
- */
 class EpochConversionsMainNetTest {
 
   private EpochConversions epochConversions;
@@ -26,13 +22,11 @@ class EpochConversionsMainNetTest {
 
   @BeforeEach
   public void setup() throws MalformedURLException {
-    var byronLink = new File("src/main/resources/mainnet/byron-genesis.json").toURL();
-    var shelleyLink = new File("src/main/resources/mainnet/shelley-genesis.json").toURL();
-
-    var conversionsConfig = new ConversionsConfig(byronLink, shelleyLink);
+    var conversionsConfig = ClasspathConversionsConfigFactory.create(MAINNET);
 
     genesisConfig = new GenesisConfig(conversionsConfig, new ObjectMapper());
-    epochConversions = new EpochConversions(genesisConfig);
+    var slotConversions = new SlotConversions(genesisConfig);
+    epochConversions = new EpochConversions(genesisConfig, slotConversions);
   }
 
   @Test
@@ -136,5 +130,29 @@ class EpochConversionsMainNetTest {
   @Test
   public void testPostShelleyAbsoluteSlotsStart() {
     assertThat(epochConversions.epochToAbsoluteSlot(448, START)).isEqualTo(108172800L);
+  }
+
+  @Test
+  public void testShelleyEraEpochStartTime() {
+    assertThat(epochConversions.epochToUTCTime(208, START))
+        .isEqualTo(LocalDateTime.of(2020, 7, 29, 21, 44, 51));
+  }
+
+  @Test
+  public void testShelleyEraEpochEndTime() {
+    assertThat(epochConversions.epochToUTCTime(208, END))
+        .isEqualTo(LocalDateTime.of(2020, 8, 3, 21, 44, 51));
+  }
+
+  @Test
+  public void testEpochByronEpoch1StartTime() {
+    assertThat(epochConversions.epochToUTCTime(1, START))
+        .isEqualTo(LocalDateTime.of(2017, 9, 28, 21, 44, 51));
+  }
+
+  @Test
+  public void testEpochBabbage450StartTime() {
+    assertThat(epochConversions.epochToUTCTime(450, START))
+        .isEqualTo(LocalDateTime.of(2023, 11, 21, 21, 44, 51));
   }
 }

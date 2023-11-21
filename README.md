@@ -19,6 +19,21 @@ This library aims to provide a common place for such conversions.
 git clone https://github.com/cardano-foundation/cf-cardano-conversions-java
 ```
 
+## Maven / Gradle
+Maven:
+```xml
+<dependency>
+    <groupId>org.cardanofoundation</groupId>
+    <artifactId>cf-cardano-conversions-java</artifactId>
+    <version>0.1</version>
+</dependency>
+```
+Gradle:
+```
+implementation("org.cardanofoundation:cf-cardano-conversions-java:0.1")
+```
+
+
 ## Additional Docs
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - [SECURITY.md](SECURITY.md)
