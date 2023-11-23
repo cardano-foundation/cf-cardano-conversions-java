@@ -36,7 +36,7 @@ Gradle:
 implementation("org.cardanofoundation:cf-cardano-conversions-java:0.1-SNAPSHOT")
 ```
 
-Example usages:
+## Example usages:
 ```java
 var converters = ClasspathConversionsFactory.createConverters(NetworkType.MAINNET);
 
