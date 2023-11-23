@@ -4,8 +4,7 @@ import org.cardanofoundation.conversions.converters.EpochConversions;
 import org.cardanofoundation.conversions.converters.SlotConversions;
 import org.cardanofoundation.conversions.converters.TimeConversions;
 
-public record Converters(
-    ConversionsConfig conversionsConfig,
+public record CardanoConverters(
     GenesisConfig genesisConfig,
     EpochConversions epochConversions,
     SlotConversions slotConversions,

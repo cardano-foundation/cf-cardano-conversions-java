@@ -23,7 +23,7 @@ import org.cardanofoundation.conversions.domain.ShelleyGenesis;
 @Slf4j
 public class GenesisConfig {
 
-  public static final int PREVIEW_EPOCH_LENGTH = 86400;
+  private static final int PREVIEW_EPOCH_LENGTH = 86400;
 
   private static final long DEFAULT_EPOCH_LENGTH = 432000; // 5 days
 

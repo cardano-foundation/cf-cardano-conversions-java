@@ -29,11 +29,12 @@ public final class ClasspathConversionsConfigFactory {
     };
   }
 
-  public static Converters createConverters(NetworkType networkType) {
+  public static CardanoConverters createConverters(NetworkType networkType) {
     return createConverters(networkType, new ObjectMapper());
   }
 
-  public static Converters createConverters(NetworkType networkType, ObjectMapper objectMapper) {
+  public static CardanoConverters createConverters(
+      NetworkType networkType, ObjectMapper objectMapper) {
     var conversionsConfig = ClasspathConversionsConfigFactory.create(networkType);
     var genesisConfig = new GenesisConfig(conversionsConfig, objectMapper);
 
@@ -41,8 +42,7 @@ public final class ClasspathConversionsConfigFactory {
     var epochConversions = new EpochConversions(genesisConfig, slotConversions);
     var timeConversions = new TimeConversions(genesisConfig, slotConversions);
 
-    return new Converters(
-        conversionsConfig, genesisConfig, epochConversions, slotConversions, timeConversions);
+    return new CardanoConverters(genesisConfig, epochConversions, slotConversions, timeConversions);
   }
 
   private static String getGenesisEraClasspathLink(Era era, NetworkType networkType) {
