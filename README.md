@@ -1,4 +1,4 @@
-# Cardano Conversions Utility 🚧️ Under Construction 🚧️
+# Cardano Conversions Utility
 
 [![Build](https://github.com/cardano-foundation/cf-cardano-conversions-java/actions/workflows/tests.yaml/badge.svg)](https://github.com/cardano-foundation/cf-cardano-conversions-java/actions/workflows/tests.yaml)
 [![License](https://img.shields.io:/github/license/cardano-foundation/cf-cardano-conversions-java?label=license)](https://github.com/cardano-foundation/cf-cardano-conversions-java/blob/master/LICENSE)
