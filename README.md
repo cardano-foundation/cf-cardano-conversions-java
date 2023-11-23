@@ -19,6 +19,33 @@ This library aims to provide a common place for such conversions.
 git clone https://github.com/cardano-foundation/cf-cardano-conversions-java
 ```
 
+## Maven / Gradle
+Maven:
+```xml
+<dependency>
+    <groupId>org.cardanofoundation</groupId>
+    <artifactId>cf-cardano-conversions-java</artifactId>
+    <version>0.1</version>
+</dependency>
+```
+Gradle:
+```
+implementation("org.cardanofoundation:cf-cardano-conversions-java:0.1")
+```
+
+Example usages:
+```java
+    var converters = ClasspathConversionsConfigFactory.createConverters(NetworkType.MAINNET);
+
+    var epochStartTime = converters.epochConversions().epochToUTCTime(445, START);
+    var utcTime = converters.slotConversions().slotToTime(109090938L;)
+    var epochNo = converters.timeConversions().utcTimeToEpochNo(LocalDateTime.of(2023, 11, 22, 9, 48, 58))
+        
+    System.out.println(epochStartTime); // LocalDateTime.of(2023, 10, 27, 21, 44, 51)
+    System.out.println(utcTime); // LocalDateTime.of(2023, 11, 22, 12, 47, 9)
+    System.out.println(epochNo); // 450
+```
+
 ## Additional Docs
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - [SECURITY.md](SECURITY.md)
