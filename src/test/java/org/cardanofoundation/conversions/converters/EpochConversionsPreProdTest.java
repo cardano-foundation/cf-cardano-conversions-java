@@ -7,7 +7,7 @@ import static org.cardanofoundation.conversions.domain.NetworkType.PREPROD;
 
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
-import org.cardanofoundation.conversions.ClasspathConversionsConfigFactory;
+import org.cardanofoundation.conversions.ClasspathConversionsFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class EpochConversionsPreProdTest {
 
   @BeforeEach
   public void setup() {
-    var converters = ClasspathConversionsConfigFactory.createConverters(PREPROD);
+    var converters = ClasspathConversionsFactory.createConverters(PREPROD);
     epochConversions = converters.epochConversions();
   }
 

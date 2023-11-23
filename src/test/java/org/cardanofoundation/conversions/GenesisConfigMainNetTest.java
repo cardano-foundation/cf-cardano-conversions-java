@@ -1,16 +1,15 @@
 package org.cardanofoundation.conversions;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.Era.*;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 @Slf4j
 class GenesisConfigMainNetTest {
@@ -19,7 +18,7 @@ class GenesisConfigMainNetTest {
 
   @BeforeEach
   public void setup() {
-    var conversionsConfig = ClasspathConversionsConfigFactory.create(MAINNET);
+    var conversionsConfig = ClasspathConversionsFactory.create(MAINNET);
 
     genesisConfig = new GenesisConfig(conversionsConfig, new ObjectMapper());
   }

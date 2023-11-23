@@ -12,7 +12,7 @@ class ClasspathConversionsConfigPreProdFactoryTest {
 
   @BeforeAll
   static void setUp() {
-    classpathConversionsConfigFactory = ClasspathConversionsConfigFactory.create(PREPROD);
+    classpathConversionsConfigFactory = ClasspathConversionsFactory.create(PREPROD);
   }
 
   @Test

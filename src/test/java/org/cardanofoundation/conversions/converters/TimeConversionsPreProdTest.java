@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.NetworkType.PREPROD;
 
 import java.time.LocalDateTime;
-import org.cardanofoundation.conversions.ClasspathConversionsConfigFactory;
+import org.cardanofoundation.conversions.ClasspathConversionsFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ class TimeConversionsPreProdTest {
 
   @BeforeEach
   public void setup() {
-    var converters = ClasspathConversionsConfigFactory.createConverters(PREPROD);
+    var converters = ClasspathConversionsFactory.createConverters(PREPROD);
     timeConversions = converters.timeConversions();
   }
 

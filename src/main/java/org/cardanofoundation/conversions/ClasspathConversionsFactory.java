@@ -10,14 +10,14 @@ import org.cardanofoundation.conversions.converters.TimeConversions;
 import org.cardanofoundation.conversions.domain.Era;
 import org.cardanofoundation.conversions.domain.NetworkType;
 
-public final class ClasspathConversionsConfigFactory {
+public final class ClasspathConversionsFactory {
 
-  private ClasspathConversionsConfigFactory() {}
+  private ClasspathConversionsFactory() {}
 
   public static ConversionsConfig create(NetworkType networkType) {
     return switch (networkType) {
       case MAINNET, PREPROD -> {
-        var loader = ClasspathConversionsConfigFactory.class.getClassLoader();
+        var loader = ClasspathConversionsFactory.class.getClassLoader();
 
         var byronLink = loader.getResource(getGenesisEraClasspathLink(Byron, networkType));
         var shelleyLink = loader.getResource(getGenesisEraClasspathLink(Shelley, networkType));
@@ -35,7 +35,7 @@ public final class ClasspathConversionsConfigFactory {
 
   public static CardanoConverters createConverters(
       NetworkType networkType, ObjectMapper objectMapper) {
-    var conversionsConfig = ClasspathConversionsConfigFactory.create(networkType);
+    var conversionsConfig = ClasspathConversionsFactory.create(networkType);
     var genesisConfig = new GenesisConfig(conversionsConfig, objectMapper);
 
     var slotConversions = new SlotConversions(genesisConfig);

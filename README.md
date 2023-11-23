@@ -35,7 +35,7 @@ implementation("org.cardanofoundation:cf-cardano-conversions-java:0.1")
 
 Example usages:
 ```java
-    var converters = ClasspathConversionsConfigFactory.createConverters(NetworkType.MAINNET);
+    var converters = ClasspathConversionsFactory.createConverters(NetworkType.MAINNET);
 
     var epochStartTime = converters.epochConversions().epochToUTCTime(445, EpochOffset.START);
     var utcTime = converters.slotConversions().slotToTime(109090938L);

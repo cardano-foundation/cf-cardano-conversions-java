@@ -8,7 +8,7 @@ import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
-import org.cardanofoundation.conversions.ClasspathConversionsConfigFactory;
+import org.cardanofoundation.conversions.ClasspathConversionsFactory;
 import org.cardanofoundation.conversions.GenesisConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,7 @@ class EpochConversionsMainNetTest {
 
   @BeforeEach
   public void setup() {
-    var converters = ClasspathConversionsConfigFactory.createConverters(MAINNET);
+    var converters = ClasspathConversionsFactory.createConverters(MAINNET);
     genesisConfig = converters.genesisConfig();
     epochConversions = converters.epochConversions();
   }

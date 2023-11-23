@@ -12,7 +12,7 @@ class ClasspathConversionsConfigMainNetFactoryTest {
 
   @BeforeAll
   static void setUp() {
-    classpathConversionsConfigFactory = ClasspathConversionsConfigFactory.create(MAINNET);
+    classpathConversionsConfigFactory = ClasspathConversionsFactory.create(MAINNET);
   }
 
   @Test
