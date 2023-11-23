@@ -37,13 +37,15 @@ Example usages:
 ```java
     var converters = ClasspathConversionsConfigFactory.createConverters(NetworkType.MAINNET);
 
-    var epochStartTime = converters.epochConversions().epochToUTCTime(445, START);
-    var utcTime = converters.slotConversions().slotToTime(109090938L;)
-    var epochNo = converters.timeConversions().utcTimeToEpochNo(LocalDateTime.of(2023, 11, 22, 9, 48, 58))
-        
+    var epochStartTime = converters.epochConversions().epochToUTCTime(445, EpochOffset.START);
+    var utcTime = converters.slotConversions().slotToTime(109090938L);
+    var epochNo = converters.timeConversions().utcTimeToEpochNo(LocalDateTime.of(2023, 11, 22, 9, 48, 58));
+    var lastAlonzoAbsoluteSlot = converters.epochConversions().epochToAbsoluteSlot(364, EpochOffset.END);
+
     System.out.println(epochStartTime); // LocalDateTime.of(2023, 10, 27, 21, 44, 51)
     System.out.println(utcTime); // LocalDateTime.of(2023, 11, 22, 12, 47, 9)
     System.out.println(epochNo); // 450
+    System.out.println(lastAlonzoAbsoluteSlot); // 72316799L
 ```
 
 ## Additional Docs
