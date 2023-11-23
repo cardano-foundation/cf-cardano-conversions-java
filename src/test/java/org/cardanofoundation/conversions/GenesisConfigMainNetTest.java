@@ -1,16 +1,16 @@
 package org.cardanofoundation.conversions;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.cardanofoundation.conversions.domain.Era.*;
-import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.MalformedURLException;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.cardanofoundation.conversions.domain.Era.*;
+import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 @Slf4j
 class GenesisConfigMainNetTest {
@@ -18,7 +18,7 @@ class GenesisConfigMainNetTest {
   private static GenesisConfig genesisConfig;
 
   @BeforeEach
-  public void setup() throws MalformedURLException {
+  public void setup() {
     var conversionsConfig = ClasspathConversionsConfigFactory.create(MAINNET);
 
     genesisConfig = new GenesisConfig(conversionsConfig, new ObjectMapper());

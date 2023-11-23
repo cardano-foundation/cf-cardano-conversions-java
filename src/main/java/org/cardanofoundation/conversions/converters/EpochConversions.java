@@ -71,12 +71,11 @@ public final class EpochConversions {
       return absoluteSlotAssumingEra(Byron, epochNo);
     }
 
-    var lastByronSlot = genesisConfig.lastByronSlot();
-    var countLastByronSlot = lastByronSlot + 1;
+    var firstShelleySlot = genesisConfig.firstShelleySlot();
 
     var postByronEpochs = (epochNo - genesisConfig.lastByronEpochNo() - 1);
 
-    return countLastByronSlot + absoluteSlotAssumingEra(Shelley, postByronEpochs);
+    return firstShelleySlot + absoluteSlotAssumingEra(Shelley, postByronEpochs);
   }
 
   /**
@@ -105,7 +104,7 @@ public final class EpochConversions {
 
     return switch (epochOffset) {
       case START -> allSlotsPerEra;
-      case END -> allSlotsPerEra + ((genesisConfig.slotsPerEpoch(era)) - 1);
+      case END -> absoluteSlotAssumingEra(era, epochNo);
     };
   }
 
