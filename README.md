@@ -30,7 +30,7 @@ Maven:
 ```
 Gradle:
 ```
-implementation("org.cardanofoundation:cf-cardano-conversions-java:0.1")
+implementation("org.cardanofoundation:cf-cardano-conversions-java:0.1-SNAPSHOT")
 ```
 
 Example usages:
