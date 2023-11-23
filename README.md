@@ -14,9 +14,12 @@ This library aims to provide a common place for such conversions.
 - JDK (>= 17)
 - maven (>= 3)
 
-## Cloning
+## Local Cloning && Building
 ```shell
 git clone https://github.com/cardano-foundation/cf-cardano-conversions-java
+
+cd cf-cardano-conversions-java
+./mvnw clean install
 ```
 
 ## Maven / Gradle
@@ -53,9 +56,3 @@ System.out.println(lastAlonzoAbsoluteSlot); // 72316799L
 - [SECURITY.md](SECURITY.md)
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CHANGELOG.md](CHANGELOG.md)
-
-## Local Building
-```shell
-cd cf-cardano-conversions-java
-./mvnw clean install
-```
