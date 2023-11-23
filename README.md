@@ -25,7 +25,7 @@ Maven:
 <dependency>
     <groupId>org.cardanofoundation</groupId>
     <artifactId>cf-cardano-conversions-java</artifactId>
-    <version>0.1</version>
+    <version>0.1-SNAPSHOT</version>
 </dependency>
 ```
 Gradle:
