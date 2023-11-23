@@ -71,7 +71,7 @@ class GenesisConfigMainNetTest {
 
   @Test
   public void testPrimitiveNetworkStartTime() {
-    assertThat(genesisConfig.getStartTimeAsPrimitive()).isEqualTo(1506203091L);
+    assertThat(genesisConfig.getCardanoNetworkStartTime()).isEqualTo(1506203091L);
   }
 
   @Test

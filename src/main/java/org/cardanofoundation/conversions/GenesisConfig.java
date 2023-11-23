@@ -1,14 +1,10 @@
 package org.cardanofoundation.conversions;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import org.cardanofoundation.conversions.domain.ByronGenesis;
-import org.cardanofoundation.conversions.domain.Era;
-import org.cardanofoundation.conversions.domain.NetworkType;
-import org.cardanofoundation.conversions.domain.ShelleyGenesis;
+import static java.time.ZoneOffset.UTC;
+import static org.cardanofoundation.conversions.domain.Era.Byron;
+import static org.cardanofoundation.conversions.domain.Era.Shelley;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URL;
@@ -16,10 +12,13 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
-
-import static java.time.ZoneOffset.UTC;
-import static org.cardanofoundation.conversions.domain.Era.Byron;
-import static org.cardanofoundation.conversions.domain.Era.Shelley;
+import lombok.Getter;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.cardanofoundation.conversions.domain.ByronGenesis;
+import org.cardanofoundation.conversions.domain.Era;
+import org.cardanofoundation.conversions.domain.NetworkType;
+import org.cardanofoundation.conversions.domain.ShelleyGenesis;
 
 @Slf4j
 public class GenesisConfig {
@@ -37,8 +36,7 @@ public class GenesisConfig {
 
   @Getter private double activeSlotsCoeff;
 
-  @Getter
-  private long cardanoNetworkStartTime;
+  @Getter private long cardanoNetworkStartTime;
 
   @Getter private long shelleyEpochLength;
 
@@ -133,7 +131,7 @@ public class GenesisConfig {
   public int firstShelleyEpochNo() {
     return switch (conversionsConfig.networkType()) {
       case MAINNET -> 208;
-      case PREPROD -> 3;
+      case PREPROD -> 4;
       default -> throw new ConversionRuntimeException("Network not yet supported!");
     };
   }

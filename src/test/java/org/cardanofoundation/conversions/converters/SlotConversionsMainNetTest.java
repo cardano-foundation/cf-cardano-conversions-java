@@ -1,12 +1,12 @@
-package org.cardanofoundation.conversions;
+package org.cardanofoundation.conversions.converters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
+import org.cardanofoundation.conversions.ClasspathConversionsConfigFactory;
+import org.cardanofoundation.conversions.GenesisConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,12 +18,10 @@ class SlotConversionsMainNetTest {
   private static GenesisConfig genesisConfig;
 
   @BeforeEach
-  public void setup() throws MalformedURLException {
-    var conversionsConfig = ClasspathConversionsConfigFactory.create(MAINNET);
-
-    genesisConfig = new GenesisConfig(conversionsConfig, new ObjectMapper());
-
-    slotConversions = new SlotConversions(genesisConfig);
+  public void setup() {
+    var converters = ClasspathConversionsConfigFactory.createConverters(MAINNET);
+    genesisConfig = converters.genesisConfig();
+    slotConversions = converters.slotConversions();
   }
 
   @Test
@@ -44,7 +42,7 @@ class SlotConversionsMainNetTest {
 
   @Test
   public void testSlot109090938() {
-    var slot = 109090938;
+    var slot = 109090938L;
 
     assertThat(slotConversions.slotToTime(slot))
         .isEqualTo(LocalDateTime.of(2023, 11, 22, 12, 47, 9));

@@ -1,12 +1,12 @@
-package org.cardanofoundation.conversions;
+package org.cardanofoundation.conversions.converters;
 
-import lombok.RequiredArgsConstructor;
-import org.cardanofoundation.conversions.domain.Era;
+import static org.cardanofoundation.conversions.domain.Era.Byron;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-
-import static org.cardanofoundation.conversions.domain.Era.Byron;
+import lombok.RequiredArgsConstructor;
+import org.cardanofoundation.conversions.GenesisConfig;
+import org.cardanofoundation.conversions.domain.Era;
 
 @RequiredArgsConstructor
 public class TimeConversions {
@@ -46,6 +46,6 @@ public class TimeConversions {
     var byronSlotsLengthSeconds = byronSlotsLength.getSeconds();
 
     return (int)
-            Math.ceil((double) (diffDurationSeconds / slotsPerEpoch / byronSlotsLengthSeconds));
+        Math.ceil((double) (diffDurationSeconds / slotsPerEpoch / byronSlotsLengthSeconds));
   }
 }

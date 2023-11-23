@@ -1,29 +1,21 @@
-package org.cardanofoundation.conversions;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.net.MalformedURLException;
-import java.time.LocalDateTime;
+package org.cardanofoundation.conversions.converters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
+
+import java.time.LocalDateTime;
+import org.cardanofoundation.conversions.ClasspathConversionsConfigFactory;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class TimeConversionsMainNetTest {
 
   private static TimeConversions timeConversions;
 
-  private static GenesisConfig genesisConfig;
-
   @BeforeEach
-  public void setup() throws MalformedURLException {
-    var conversionsConfig = ClasspathConversionsConfigFactory.create(MAINNET);
-
-    genesisConfig = new GenesisConfig(conversionsConfig, new ObjectMapper());
-
-    var slotConversions = new SlotConversions(genesisConfig);
-    timeConversions = new TimeConversions(genesisConfig, slotConversions);
+  public void setup() {
+    var converters = ClasspathConversionsConfigFactory.createConverters(MAINNET);
+    timeConversions = converters.timeConversions();
   }
 
   @Test

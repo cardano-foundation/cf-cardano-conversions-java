@@ -1,7 +1,8 @@
-package org.cardanofoundation.conversions;
+package org.cardanofoundation.conversions.converters;
 
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.cardanofoundation.conversions.GenesisConfig;
 import org.cardanofoundation.conversions.domain.Era;
 
 @RequiredArgsConstructor

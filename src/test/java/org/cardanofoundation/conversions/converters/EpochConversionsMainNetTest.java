@@ -1,4 +1,4 @@
-package org.cardanofoundation.conversions;
+package org.cardanofoundation.conversions.converters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.EpochOffset.END;
@@ -6,10 +6,10 @@ import static org.cardanofoundation.conversions.domain.EpochOffset.START;
 import static org.cardanofoundation.conversions.domain.Era.Byron;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.net.MalformedURLException;
 import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
+import org.cardanofoundation.conversions.ClasspathConversionsConfigFactory;
+import org.cardanofoundation.conversions.GenesisConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,12 +21,10 @@ class EpochConversionsMainNetTest {
   private GenesisConfig genesisConfig;
 
   @BeforeEach
-  public void setup() throws MalformedURLException {
-    var conversionsConfig = ClasspathConversionsConfigFactory.create(MAINNET);
-
-    genesisConfig = new GenesisConfig(conversionsConfig, new ObjectMapper());
-    var slotConversions = new SlotConversions(genesisConfig);
-    epochConversions = new EpochConversions(genesisConfig, slotConversions);
+  public void setup() {
+    var converters = ClasspathConversionsConfigFactory.createConverters(MAINNET);
+    genesisConfig = converters.genesisConfig();
+    epochConversions = converters.epochConversions();
   }
 
   @Test
@@ -148,6 +146,18 @@ class EpochConversionsMainNetTest {
   public void testEpochByronEpoch1StartTime() {
     assertThat(epochConversions.epochToUTCTime(1, START))
         .isEqualTo(LocalDateTime.of(2017, 9, 28, 21, 44, 51));
+  }
+
+  @Test
+  public void testEpochBabbage445StartTime() {
+    assertThat(epochConversions.epochToUTCTime(445, START))
+        .isEqualTo(LocalDateTime.of(2023, 10, 27, 21, 44, 51));
+  }
+
+  @Test
+  public void testEpochBabbage445EndTime() {
+    assertThat(epochConversions.epochToUTCTime(445, END))
+        .isEqualTo(LocalDateTime.of(2023, 11, 1, 21, 44, 51));
   }
 
   @Test

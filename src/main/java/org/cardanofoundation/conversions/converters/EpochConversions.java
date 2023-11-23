@@ -1,4 +1,4 @@
-package org.cardanofoundation.conversions;
+package org.cardanofoundation.conversions.converters;
 
 import static org.cardanofoundation.conversions.domain.EpochOffset.END;
 import static org.cardanofoundation.conversions.domain.EpochOffset.START;
@@ -8,6 +8,7 @@ import static org.cardanofoundation.conversions.domain.Era.Shelley;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cardanofoundation.conversions.GenesisConfig;
 import org.cardanofoundation.conversions.domain.EpochOffset;
 import org.cardanofoundation.conversions.domain.Era;
 
