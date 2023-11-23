@@ -25,7 +25,7 @@ class EpochConversionsPreProdTest {
   @Test
   public void testEpochBabbage107EndTime() {
     assertThat(epochConversions.epochToUTCTime(107, END))
-        .isEqualTo(LocalDateTime.of(2023, 11, 23, 0, 0, 0));
+        .isEqualTo(LocalDateTime.of(2023, 11, 22, 23, 59, 59));
   }
 
   @Test
@@ -37,6 +37,6 @@ class EpochConversionsPreProdTest {
   @Test
   public void testEpochBabbage103EndTime() {
     assertThat(epochConversions.epochToUTCTime(103, END))
-        .isEqualTo(LocalDateTime.of(2023, 11, 3, 0, 0, 0));
+        .isEqualTo(LocalDateTime.of(2023, 11, 2, 23, 59, 59));
   }
 }

@@ -75,12 +75,12 @@ class EpochConversionsMainNetTest {
 
   @Test
   public void testLastShelleyAbsoluteSlots() {
-    assertThat(epochConversions.epochToAbsoluteSlot(235, END)).isEqualTo((16588800L));
+    assertThat(epochConversions.epochToAbsoluteSlot(235, END)).isEqualTo((16588799L));
   }
 
   @Test
   public void testFirstAllegraSlot() {
-    var firstAllegraSlot = (epochConversions.epochToAbsoluteSlot(235, END));
+    var firstAllegraSlot = 16588800;
 
     assertThat(epochConversions.epochToAbsoluteSlot(236, START)).isEqualTo(firstAllegraSlot);
   }
@@ -92,7 +92,7 @@ class EpochConversionsMainNetTest {
 
   @Test
   public void testLastMarySlot() {
-    assertThat(epochConversions.epochToAbsoluteSlot(289, END)).isEqualTo(39916800L);
+    assertThat(epochConversions.epochToAbsoluteSlot(289, END)).isEqualTo(39916799L);
   }
 
   @Test
@@ -117,12 +117,12 @@ class EpochConversionsMainNetTest {
 
   @Test
   public void testLastAlonzoSlot() {
-    assertThat(epochConversions.epochToAbsoluteSlot(364, END)).isEqualTo(72316800L);
+    assertThat(epochConversions.epochToAbsoluteSlot(364, END)).isEqualTo(72316799L);
   }
 
   @Test
   public void testEpoch448LastSlot() {
-    assertThat(epochConversions.epochToAbsoluteSlot(448, END)).isEqualTo(108604800L);
+    assertThat(epochConversions.epochToAbsoluteSlot(448, END)).isEqualTo(108604799L);
   }
 
   @Test
@@ -139,7 +139,7 @@ class EpochConversionsMainNetTest {
   @Test
   public void testShelleyEraEpochEndTime() {
     assertThat(epochConversions.epochToUTCTime(208, END))
-        .isEqualTo(LocalDateTime.of(2020, 8, 3, 21, 44, 51));
+        .isEqualTo(LocalDateTime.of(2020, 8, 3, 21, 44, 50));
   }
 
   @Test
@@ -157,7 +157,7 @@ class EpochConversionsMainNetTest {
   @Test
   public void testEpochBabbage445EndTime() {
     assertThat(epochConversions.epochToUTCTime(445, END))
-        .isEqualTo(LocalDateTime.of(2023, 11, 1, 21, 44, 51));
+        .isEqualTo(LocalDateTime.of(2023, 11, 1, 21, 44, 50));
   }
 
   @Test

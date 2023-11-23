@@ -51,26 +51,32 @@ public final class EpochConversions {
     return switch (epochOffset) {
       case START -> {
         if (epochNo <= genesisConfig.lastByronEpochNo()) {
-          yield absoluteSlotAssumingEra(Byron, epochNo, END)
-              - genesisConfig.slotsPerEpoch(Byron)
-              + 1;
+          yield (absoluteSlotAssumingEra(Byron, epochNo) - genesisConfig.slotsPerEpoch(Byron)) + 1;
         }
 
-        yield epochToAbsoluteSlot(epochNo, END) - genesisConfig.slotsPerEpoch(Shelley);
+        yield (epochToAbsoluteSlot(epochNo) - genesisConfig.slotsPerEpoch(Shelley)) + 1;
       }
-      case END -> {
-        if (epochNo <= genesisConfig.lastByronEpochNo()) {
-          yield absoluteSlotAssumingEra(Byron, epochNo, END);
-        }
-
-        var lastByronSlot = genesisConfig.lastByronSlot();
-        var countLastByronSlot = lastByronSlot + 1;
-
-        var postByronEpochs = (epochNo - genesisConfig.lastByronEpochNo() - 1);
-
-        yield 1 + countLastByronSlot + absoluteSlotAssumingEra(Shelley, postByronEpochs, END);
-      }
+      case END -> epochToAbsoluteSlot(epochNo);
     };
+  }
+
+  /**
+   * Canonical implementation of epochToAbsoluteSlot function.
+   *
+   * @param epochNo epoch number
+   * @return absolute slot
+   */
+  long epochToAbsoluteSlot(int epochNo) {
+    if (epochNo <= genesisConfig.lastByronEpochNo()) {
+      return absoluteSlotAssumingEra(Byron, epochNo);
+    }
+
+    var lastByronSlot = genesisConfig.lastByronSlot();
+    var countLastByronSlot = lastByronSlot + 1;
+
+    var postByronEpochs = (epochNo - genesisConfig.lastByronEpochNo() - 1);
+
+    return countLastByronSlot + absoluteSlotAssumingEra(Shelley, postByronEpochs);
   }
 
   /**
@@ -101,6 +107,17 @@ public final class EpochConversions {
       case START -> allSlotsPerEra;
       case END -> allSlotsPerEra + ((genesisConfig.slotsPerEpoch(era)) - 1);
     };
+  }
+
+  /**
+   * @param era
+   * @param epochNo
+   * @return
+   */
+  long absoluteSlotAssumingEra(Era era, int epochNo) {
+    long allSlotsPerEra = genesisConfig.slotsPerEpoch(era) * epochNo;
+
+    return allSlotsPerEra + ((genesisConfig.slotsPerEpoch(era)) - 1);
   }
 
   /**

@@ -10,6 +10,12 @@ public class SlotConversions {
 
   private final GenesisConfig genesisConfig;
 
+  /**
+   * Convert absolute slot to UTC time.
+   *
+   * @param absoluteSlot absolute slot
+   * @return UTC time
+   */
   public LocalDateTime slotToTime(long absoluteSlot) {
     var lastByronSlot = genesisConfig.lastByronSlot();
 

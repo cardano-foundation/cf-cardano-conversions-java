@@ -1,6 +1,7 @@
 package org.cardanofoundation.conversions.converters;
 
 import static org.cardanofoundation.conversions.domain.Era.Byron;
+import static org.cardanofoundation.conversions.domain.Era.Shelley;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -15,6 +16,12 @@ public class TimeConversions {
 
   private final SlotConversions slotsConversions;
 
+  /**
+   * Based on UTC time find out what is the epoch number.
+   *
+   * @param utcTime - UTC time
+   * @return epoch number for this time
+   */
   public int utcTimeToEpochNo(LocalDateTime utcTime) {
     var lastGenesisSlot = genesisConfig.lastByronSlot();
     var lastByronSlotTime = slotsConversions.slotToTime(lastGenesisSlot);
@@ -28,7 +35,7 @@ public class TimeConversions {
 
     var diffDuration = Duration.between(lastByronTime, utcTime);
     var diffDurationSeconds = diffDuration.getSeconds();
-    var slotsPerEpoch = genesisConfig.slotsPerEpoch(Era.Shelley);
+    var slotsPerEpoch = genesisConfig.slotsPerEpoch(Shelley);
     var shelleyEraLength = genesisConfig.getShelleySlotLength();
     var shelleyEraLengthSeconds = shelleyEraLength.getSeconds();
 
