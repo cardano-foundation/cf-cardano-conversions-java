@@ -24,9 +24,7 @@ public final class ClasspathConversionsFactory {
         var shelleyLink = loader.getResource(getGenesisEraClasspathLink(Shelley, networkType));
         var genesisPaths = new GenesisPaths(networkType, byronLink, shelleyLink);
 
-        var eraHistory = EraLineFactory.create(genesisPaths);
-
-        yield new ConversionsConfig(networkType, genesisPaths, eraHistory);
+        yield new ConversionsConfig(networkType, genesisPaths);
       }
 
       default -> throw new IllegalStateException("Unsupported network type: " + networkType);
@@ -40,7 +38,9 @@ public final class ClasspathConversionsFactory {
   public static CardanoConverters createConverters(
       NetworkType networkType, ObjectMapper objectMapper) {
     var conversionsConfig = ClasspathConversionsFactory.create(networkType);
-    var genesisConfig = new GenesisConfig(conversionsConfig, objectMapper);
+    var eraHistory = EraHistoryFactory.create(conversionsConfig.genesisPaths());
+
+    var genesisConfig = new GenesisConfig(conversionsConfig, eraHistory, objectMapper);
 
     var slotConversions = new SlotConversions(genesisConfig);
     var epochConversions = new EpochConversions(genesisConfig, slotConversions);

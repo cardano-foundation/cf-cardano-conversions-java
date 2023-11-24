@@ -19,8 +19,9 @@ class GenesisConfigMainNetTest {
   @BeforeEach
   public void setup() {
     var conversionsConfig = ClasspathConversionsFactory.create(MAINNET);
+    var eraHistory = EraHistoryFactory.create(conversionsConfig.genesisPaths());
 
-    genesisConfig = new GenesisConfig(conversionsConfig, new ObjectMapper());
+    genesisConfig = new GenesisConfig(conversionsConfig, eraHistory, new ObjectMapper());
   }
 
   @Test

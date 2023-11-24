@@ -8,8 +8,8 @@ public class ConversionsExample {
     var converters = ClasspathConversionsFactory.createConverters(PREPROD);
 
     converters
-        .conversionsConfig()
-        .eraHistory()
+        .genesisConfig()
+        .getEraHistory()
         .all()
         .forEach(
             eraLine -> {

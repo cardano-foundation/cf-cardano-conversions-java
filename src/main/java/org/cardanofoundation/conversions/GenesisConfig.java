@@ -1,17 +1,6 @@
 package org.cardanofoundation.conversions;
 
-import static java.time.ZoneOffset.UTC;
-import static org.cardanofoundation.conversions.domain.EraType.Byron;
-import static org.cardanofoundation.conversions.domain.EraType.Shelley;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.net.URL;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +8,18 @@ import org.cardanofoundation.conversions.domain.ByronGenesis;
 import org.cardanofoundation.conversions.domain.EraHistoryItem;
 import org.cardanofoundation.conversions.domain.EraType;
 import org.cardanofoundation.conversions.domain.ShelleyGenesis;
+
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.net.URL;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.stream.Stream;
+
+import static java.time.ZoneOffset.UTC;
+import static org.cardanofoundation.conversions.domain.EraType.Byron;
+import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 
 @Slf4j
 public class GenesisConfig {
@@ -41,8 +42,12 @@ public class GenesisConfig {
 
   @Getter private long protocolNetworkMagic;
 
-  public GenesisConfig(ConversionsConfig conversionsConfig, ObjectMapper objectMapper) {
+  @Getter private EraHistory eraHistory;
+
+  public GenesisConfig(
+      ConversionsConfig conversionsConfig, EraHistory eraHistory, ObjectMapper objectMapper) {
     this.conversionsConfig = conversionsConfig;
+    this.eraHistory = eraHistory;
     this.objectMapper = objectMapper;
 
     var byronGenesis = parseByronGenesisFile(conversionsConfig.genesisPaths().byronLink());
@@ -109,8 +114,7 @@ public class GenesisConfig {
   }
 
   public int firstShelleyEpochNo() {
-    return conversionsConfig
-        .eraHistory()
+    return eraHistory
         .findFirstByEra(Shelley)
         .map(EraHistoryItem::startEpochNo)
         .orElseThrow(() -> new ConversionRuntimeException("Shelley era not found!"));
