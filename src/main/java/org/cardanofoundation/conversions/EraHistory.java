@@ -1,15 +1,16 @@
 package org.cardanofoundation.conversions;
 
+import org.cardanofoundation.conversions.domain.*;
+
+import java.util.List;
+import java.util.Optional;
+
 import static org.cardanofoundation.conversions.domain.Consensus.*;
 import static org.cardanofoundation.conversions.domain.EraType.Byron;
 import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 import static org.cardanofoundation.conversions.domain.LedgerProtocol.Praos;
 import static org.cardanofoundation.conversions.domain.LedgerProtocol.TPraos;
-import static org.cardanofoundation.conversions.domain.ProtocolVersion.VER_0_0;
-
-import java.util.List;
-import java.util.Optional;
-import org.cardanofoundation.conversions.domain.*;
+import static org.cardanofoundation.conversions.domain.ProtocolVersion.*;
 
 public class EraHistory {
 
@@ -78,10 +79,10 @@ public class EraHistory {
         new EraLine(
             Phase.Gougen,
             Era.noGenesis(EraType.Mary),
-            23068800L,
-            Optional.of(39916796L),
-            23068800L,
-            Optional.of(39916800L),
+            23_068_800L,
+            Optional.of(399_167_96L),
+            23_068_800L,
+            Optional.of(39_916_800L),
             251,
             Optional.of(289),
             ProtocolVersion.VER_4_0,
@@ -91,10 +92,10 @@ public class EraHistory {
         new EraLine(
             Phase.Gougen,
             Era.noGenesis(EraType.Alonzo),
-            39916975L,
+            39_916_975L,
             Optional.empty(), // TODO: find out this value based on some explorer data
-            39916800L,
-            Optional.of(43372800L - 1L),
+            39_916_800L,
+            Optional.of(43_372_800L - 1L),
             290,
             Optional.of(297),
             ProtocolVersion.VER_5_0,
@@ -104,13 +105,13 @@ public class EraHistory {
         new EraLine(
             Phase.Gougen,
             Era.noGenesis(EraType.Alonzo),
-            43372972L,
-            Optional.of(72316796L),
-            43372800L,
-            Optional.of(72316800L - 1L),
+            43_372_972L,
+            Optional.of(72_316_796L),
+            43_372_800L,
+            Optional.of(72_316_800L - 1L),
             298,
             Optional.of(364),
-            ProtocolVersion.VER_6_0,
+            VER_6_0,
             Optional.of(TPraos),
             Ouroboros_Praos,
             false),
@@ -136,7 +137,7 @@ public class EraHistory {
             Optional.empty(),
             394,
             Optional.empty(),
-            ProtocolVersion.VER_8_0,
+            VER_8_0,
             Optional.of(Praos),
             Ouroboros_Praos,
             true));
@@ -203,10 +204,10 @@ public class EraHistory {
             -1L, // TODO find out this value based on some explorer data
             Optional.of(3_542_390L),
             1_382_400L,
-            Optional.of(3974400L - 1L),
+            Optional.of(3_974_400L - 1L),
             7,
             Optional.of(12),
-            ProtocolVersion.VER_6_0,
+            VER_6_0,
             Optional.of(TPraos),
             Ouroboros_Praos,
             false),
@@ -219,7 +220,7 @@ public class EraHistory {
             Optional.empty(),
             13,
             Optional.empty(),
-            ProtocolVersion.VER_8_0,
+            VER_8_0,
             Optional.of(Praos),
             Ouroboros_Praos,
             true));
