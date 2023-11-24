@@ -12,6 +12,11 @@ import static org.cardanofoundation.conversions.domain.LedgerProtocol.Praos;
 import static org.cardanofoundation.conversions.domain.LedgerProtocol.TPraos;
 import static org.cardanofoundation.conversions.domain.ProtocolVersion.*;
 
+/**
+ * Data sources:
+ * - https://cips.cardano.org/cips/cip59/feature-table.md.html
+ * - https://cardanosolutions.github.io/kupo/#section/Rollbacks-and-chain-forks/How-Kupo-deals-with-rollbacks
+ */
 public class EraHistory {
 
   public static List<EraLine> all(ConversionsConfig conversionsConfig) {
