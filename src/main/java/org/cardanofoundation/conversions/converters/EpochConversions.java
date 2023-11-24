@@ -79,6 +79,26 @@ public final class EpochConversions {
   }
 
   /**
+   * Converts epoch number to the UTC Time at the beginning of given epoch
+   *
+   * @param epochNo epoch number
+   * @return UTC time
+   */
+  public LocalDateTime beginningOfEpochToUTCTime(int epochNo) {
+    return epochToUTCTime(epochNo, START);
+  }
+
+  /**
+   * Converts epoch number to the UTC Time at the end of a given epoch
+   *
+   * @param epochNo epoch number
+   * @return UTC time
+   */
+  public LocalDateTime endingOfEpochToUTCTime(int epochNo) {
+    return epochToUTCTime(epochNo, END);
+  }
+
+  /**
    * Converts epoch number to UTC time.
    *
    * @param epochNo - epoch number, e.g. 208
@@ -108,11 +128,6 @@ public final class EpochConversions {
     };
   }
 
-  /**
-   * @param era
-   * @param epochNo
-   * @return
-   */
   long absoluteSlotAssumingEra(Era era, int epochNo) {
     long allSlotsPerEra = genesisConfig.slotsPerEpoch(era) * epochNo;
 
@@ -120,7 +135,7 @@ public final class EpochConversions {
   }
 
   /**
-   * Returns first slot of a given epoch.
+   * Returns first slot of a given epoch based on era.
    *
    * @param era - cardano era e.g. Byron, Shelley
    * @param epochNo - epoch number, e.g. 208
@@ -131,7 +146,7 @@ public final class EpochConversions {
   }
 
   /**
-   * Returns last slot of a given epoch.
+   * Returns last slot of a given epoch based on era.
    *
    * @param era - cardano era e.g. Byron, Shelley
    * @param epochNo - epoch number, e.g. 208
