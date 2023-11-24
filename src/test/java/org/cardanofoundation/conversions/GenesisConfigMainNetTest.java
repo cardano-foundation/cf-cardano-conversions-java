@@ -1,7 +1,7 @@
 package org.cardanofoundation.conversions;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.cardanofoundation.conversions.domain.Era.*;
+import static org.cardanofoundation.conversions.domain.EraType.*;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

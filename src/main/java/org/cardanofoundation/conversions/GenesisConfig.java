@@ -1,8 +1,8 @@
 package org.cardanofoundation.conversions;
 
 import static java.time.ZoneOffset.UTC;
-import static org.cardanofoundation.conversions.domain.Era.Byron;
-import static org.cardanofoundation.conversions.domain.Era.Shelley;
+import static org.cardanofoundation.conversions.domain.EraType.Byron;
+import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.InputStream;
@@ -16,18 +16,15 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.cardanofoundation.conversions.domain.ByronGenesis;
-import org.cardanofoundation.conversions.domain.Era;
-import org.cardanofoundation.conversions.domain.NetworkType;
+import org.cardanofoundation.conversions.domain.EraLine;
+import org.cardanofoundation.conversions.domain.EraType;
 import org.cardanofoundation.conversions.domain.ShelleyGenesis;
 
 @Slf4j
 public class GenesisConfig {
 
-  private static final int PREVIEW_EPOCH_LENGTH = 86400;
-
-  private static final long DEFAULT_EPOCH_LENGTH = 432000; // 5 days
-
   private final ConversionsConfig conversionsConfig;
+
   private final ObjectMapper objectMapper;
 
   @Getter private Duration byronSlotLength;
@@ -73,7 +70,7 @@ public class GenesisConfig {
     return getStartTime().plusSeconds(firstShelleySlot() * slotDuration(Byron).getSeconds());
   }
 
-  public LocalDateTime blockTime(Era era, long slot) {
+  public LocalDateTime blockTime(EraType era, long slot) {
     if (era == Byron) {
       return byronBlockTime(slot);
     }
@@ -91,37 +88,20 @@ public class GenesisConfig {
   /**
    * Given era return duration of a slot
    *
-   * @param era
-   * @return duration of a slot in a given era
+   * @param eraType - cardano eraType e.g. Byron, Shelley
+   * @return duration of a slot in a given eraType
    */
-  public Duration slotDuration(Era era) {
-    if (era == Byron) {
+  public Duration slotDuration(EraType eraType) {
+    if (eraType == Byron) {
       return byronSlotLength;
     }
 
     return shelleySlotLength;
   }
 
-  public long slotsPerEpoch(Era era) {
-    return (getEpochLengthInSlots() / slotDuration(era).getSeconds());
-  }
-
-  public long getEpochLengthInSlots() {
-    var networkTypeM = NetworkType.fromProtocolMagic(protocolNetworkMagic);
-    if (networkTypeM.isEmpty()) {
-      throw new ConversionRuntimeException("Unknown protocol magic: " + protocolNetworkMagic);
-    }
-
-    var networkType = networkTypeM.get();
-
-    return getEpochLengthInSlots(networkType);
-  }
-
-  public long getEpochLengthInSlots(NetworkType networkType) {
-    return switch (networkType) {
-      case PREVIEW -> PREVIEW_EPOCH_LENGTH;
-      default -> DEFAULT_EPOCH_LENGTH;
-    };
+  public long slotsPerEpoch(EraType era) {
+    return (conversionsConfig.networkType().getEpochLengthInSlots()
+        / slotDuration(era).getSeconds());
   }
 
   public int lastByronEpochNo() {
@@ -129,11 +109,9 @@ public class GenesisConfig {
   }
 
   public int firstShelleyEpochNo() {
-    return switch (conversionsConfig.networkType()) {
-      case MAINNET -> 208;
-      case PREPROD -> 4;
-      default -> throw new ConversionRuntimeException("Network not yet supported!");
-    };
+    return EraHistory.findFirstByEra(Shelley, conversionsConfig)
+        .map(EraLine::startEpochNo)
+        .orElseThrow(() -> new ConversionRuntimeException("Shelley era not found!"));
   }
 
   public long lastByronSlot() {

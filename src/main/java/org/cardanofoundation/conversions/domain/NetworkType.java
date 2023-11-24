@@ -1,28 +1,26 @@
 package org.cardanofoundation.conversions.domain;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 public enum NetworkType {
-  MAINNET(764824073),
-  LEGACY_TESTNET(1097911063),
-  PREPROD(1),
-  PREVIEW(2),
-  DEV(42);
+  MAINNET(764_824_073L, 432_000L),
+  LEGACY_TESTNET(1_097_911_063L, 432_000L),
+  PREPROD(1L, 432_000L),
+  PREVIEW(2L, 86_400L),
+  DEV(42L, 432_000L);
 
-  long protocolMagic;
+  private final long protocolMagic;
 
-  NetworkType(long protocolMagic) {
+  private final long epochLengthInSlots;
+
+  NetworkType(long protocolMagic, long epochLengthInSlots) {
     this.protocolMagic = protocolMagic;
+    this.epochLengthInSlots = epochLengthInSlots;
   }
 
   public long getProtocolMagic() {
     return protocolMagic;
   }
 
-  public static Optional<NetworkType> fromProtocolMagic(long protocolMagic) {
-    return Arrays.stream(NetworkType.values())
-        .filter(networkType -> networkType.getProtocolMagic() == protocolMagic)
-        .findFirst();
+  public long getEpochLengthInSlots() {
+    return epochLengthInSlots;
   }
 }
