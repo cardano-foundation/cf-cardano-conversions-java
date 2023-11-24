@@ -2,15 +2,15 @@ package org.cardanofoundation.conversions.converters;
 
 import static org.cardanofoundation.conversions.domain.EpochOffset.END;
 import static org.cardanofoundation.conversions.domain.EpochOffset.START;
-import static org.cardanofoundation.conversions.domain.Era.Byron;
-import static org.cardanofoundation.conversions.domain.Era.Shelley;
+import static org.cardanofoundation.conversions.domain.EraType.Byron;
+import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cardanofoundation.conversions.GenesisConfig;
 import org.cardanofoundation.conversions.domain.EpochOffset;
-import org.cardanofoundation.conversions.domain.Era;
+import org.cardanofoundation.conversions.domain.EraType;
 
 @AllArgsConstructor
 @Slf4j
@@ -21,7 +21,8 @@ public final class EpochConversions {
   private final SlotConversions slotConversions;
 
   /**
-   * Returns an absolute slot being pointing to the beginning of an epoch based on a given epochNo.
+   * Returns an absolute slot being pointing to the beginning of an epoch based on a given
+   * startEpochNo.
    *
    * @param epochNo - epoch number, e.g. 208
    * @return absolute slot of the beginning of an epoch
@@ -37,7 +38,7 @@ public final class EpochConversions {
    * @return absolute slot of the end of an epoch
    */
   public long endingOfEpochToAbsoluteSlot(int epochNo) {
-    return epochToAbsoluteSlot(epochNo, END);
+    return epochToAbsoluteSlot(epochNo);
   }
 
   /**
@@ -51,7 +52,9 @@ public final class EpochConversions {
     return switch (epochOffset) {
       case START -> {
         if (epochNo <= genesisConfig.lastByronEpochNo()) {
-          yield (absoluteSlotAssumingEra(Byron, epochNo) - genesisConfig.slotsPerEpoch(Byron)) + 1;
+          yield (absoluteSlotAssumingEra(EraType.Byron, epochNo)
+                  - genesisConfig.slotsPerEpoch(Byron))
+              + 1;
         }
 
         yield (epochToAbsoluteSlot(epochNo) - genesisConfig.slotsPerEpoch(Shelley)) + 1;
@@ -119,7 +122,7 @@ public final class EpochConversions {
    * @param epochOffset - start or end of a given epoch
    * @return absolute slot of a given epoch
    */
-  long absoluteSlotAssumingEra(Era era, int epochNo, EpochOffset epochOffset) {
+  long absoluteSlotAssumingEra(EraType era, int epochNo, EpochOffset epochOffset) {
     long allSlotsPerEra = genesisConfig.slotsPerEpoch(era) * epochNo;
 
     return switch (epochOffset) {
@@ -128,7 +131,7 @@ public final class EpochConversions {
     };
   }
 
-  long absoluteSlotAssumingEra(Era era, int epochNo) {
+  long absoluteSlotAssumingEra(EraType era, int epochNo) {
     long allSlotsPerEra = genesisConfig.slotsPerEpoch(era) * epochNo;
 
     return allSlotsPerEra + ((genesisConfig.slotsPerEpoch(era)) - 1);
@@ -141,7 +144,7 @@ public final class EpochConversions {
    * @param epochNo - epoch number, e.g. 208
    * @return first slot of a given epoch
    */
-  long firstEpochSlot(Era era, int epochNo) {
+  long firstEpochSlot(EraType era, int epochNo) {
     return absoluteSlotAssumingEra(era, epochNo, START);
   }
 
@@ -152,7 +155,7 @@ public final class EpochConversions {
    * @param epochNo - epoch number, e.g. 208
    * @return last slot of a given epoch
    */
-  long lastEpochSlot(Era era, int epochNo) {
+  long lastEpochSlot(EraType era, int epochNo) {
     return absoluteSlotAssumingEra(era, epochNo, END);
   }
 }

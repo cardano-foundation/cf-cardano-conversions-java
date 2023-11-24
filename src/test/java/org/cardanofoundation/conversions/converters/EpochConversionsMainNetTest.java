@@ -3,7 +3,7 @@ package org.cardanofoundation.conversions.converters;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.EpochOffset.END;
 import static org.cardanofoundation.conversions.domain.EpochOffset.START;
-import static org.cardanofoundation.conversions.domain.Era.Byron;
+import static org.cardanofoundation.conversions.domain.EraType.Byron;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 import java.time.LocalDateTime;

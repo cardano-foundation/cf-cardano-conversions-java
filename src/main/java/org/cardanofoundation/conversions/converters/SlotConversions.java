@@ -3,7 +3,7 @@ package org.cardanofoundation.conversions.converters;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.cardanofoundation.conversions.GenesisConfig;
-import org.cardanofoundation.conversions.domain.Era;
+import org.cardanofoundation.conversions.domain.EraType;
 
 @RequiredArgsConstructor
 public class SlotConversions {
@@ -20,10 +20,10 @@ public class SlotConversions {
     var lastByronSlot = genesisConfig.lastByronSlot();
 
     if (absoluteSlot <= lastByronSlot) {
-      return genesisConfig.blockTime(Era.Byron, absoluteSlot);
+      return genesisConfig.blockTime(EraType.Byron, absoluteSlot);
     }
 
     // for now post byron we have 1 slot = 1 second
-    return genesisConfig.blockTime(Era.Shelley, absoluteSlot);
+    return genesisConfig.blockTime(EraType.Shelley, absoluteSlot);
   }
 }

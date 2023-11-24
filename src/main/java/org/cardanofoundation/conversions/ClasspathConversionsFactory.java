@@ -1,13 +1,13 @@
 package org.cardanofoundation.conversions;
 
-import static org.cardanofoundation.conversions.domain.Era.Byron;
-import static org.cardanofoundation.conversions.domain.Era.Shelley;
+import static org.cardanofoundation.conversions.domain.EraType.Byron;
+import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cardanofoundation.conversions.converters.EpochConversions;
 import org.cardanofoundation.conversions.converters.SlotConversions;
 import org.cardanofoundation.conversions.converters.TimeConversions;
-import org.cardanofoundation.conversions.domain.Era;
+import org.cardanofoundation.conversions.domain.EraType;
 import org.cardanofoundation.conversions.domain.NetworkType;
 
 public final class ClasspathConversionsFactory {
@@ -42,10 +42,11 @@ public final class ClasspathConversionsFactory {
     var epochConversions = new EpochConversions(genesisConfig, slotConversions);
     var timeConversions = new TimeConversions(genesisConfig, slotConversions);
 
-    return new CardanoConverters(genesisConfig, epochConversions, slotConversions, timeConversions);
+    return new CardanoConverters(
+        conversionsConfig, genesisConfig, epochConversions, slotConversions, timeConversions);
   }
 
-  private static String getGenesisEraClasspathLink(Era era, NetworkType networkType) {
+  private static String getGenesisEraClasspathLink(EraType era, NetworkType networkType) {
     return String.format(
         "genesis-files/%s/%s-genesis.json",
         networkType.toString().toLowerCase(), era.name().toLowerCase());

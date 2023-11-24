@@ -1,13 +1,13 @@
 package org.cardanofoundation.conversions.converters;
 
-import static org.cardanofoundation.conversions.domain.Era.Byron;
-import static org.cardanofoundation.conversions.domain.Era.Shelley;
+import static org.cardanofoundation.conversions.domain.EraType.Byron;
+import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.cardanofoundation.conversions.GenesisConfig;
-import org.cardanofoundation.conversions.domain.Era;
+import org.cardanofoundation.conversions.domain.EraType;
 
 @RequiredArgsConstructor
 public class TimeConversions {
@@ -45,7 +45,7 @@ public class TimeConversions {
     return lastByronEpoch + shelleyEpochs;
   }
 
-  int utcTimeToEpochNo(Era era, LocalDateTime utcTime) {
+  int utcTimeToEpochNo(EraType era, LocalDateTime utcTime) {
     var diffDuration = Duration.between(genesisConfig.getStartTime(), utcTime);
     var diffDurationSeconds = diffDuration.getSeconds();
     var slotsPerEpoch = genesisConfig.slotsPerEpoch(era);
