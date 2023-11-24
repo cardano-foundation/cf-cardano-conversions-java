@@ -7,7 +7,10 @@ public class ConversionsExample {
   public static void main(String[] args) {
     var converters = ClasspathConversionsFactory.createConverters(PREPROD);
 
-    EraHistory.all(converters.conversionsConfig())
+    converters
+        .conversionsConfig()
+        .eraHistory()
+        .all()
         .forEach(
             eraLine -> {
               System.out.println("Era:" + eraLine.era().eraType());
@@ -18,9 +21,7 @@ public class ConversionsExample {
 
               System.out.println(
                   "Start Absolute Slot:"
-                      + converters
-                          .epochConversions()
-                          .beginningOfEpochToAbsoluteSlot(eraLine.startEpochNo()));
+                      + converters.epoch().beginningOfEpochToAbsoluteSlot(eraLine.startEpochNo()));
 
               eraLine
                   .endEpochNo()
@@ -28,9 +29,7 @@ public class ConversionsExample {
                       endEpochNo -> {
                         System.out.println(
                             "End Absolute Slot:"
-                                + converters
-                                    .epochConversions()
-                                    .endingOfEpochToAbsoluteSlot(endEpochNo));
+                                + converters.epoch().endingOfEpochToAbsoluteSlot(endEpochNo));
                       });
 
               System.out.println("--------------------");

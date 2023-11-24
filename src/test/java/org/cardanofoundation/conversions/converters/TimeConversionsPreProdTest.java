@@ -15,7 +15,7 @@ class TimeConversionsPreProdTest {
   @BeforeEach
   public void setup() {
     var converters = ClasspathConversionsFactory.createConverters(PREPROD);
-    timeConversions = converters.timeConversions();
+    timeConversions = converters.time();
   }
 
   @Test

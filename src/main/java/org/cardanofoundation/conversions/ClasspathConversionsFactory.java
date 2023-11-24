@@ -8,6 +8,7 @@ import org.cardanofoundation.conversions.converters.EpochConversions;
 import org.cardanofoundation.conversions.converters.SlotConversions;
 import org.cardanofoundation.conversions.converters.TimeConversions;
 import org.cardanofoundation.conversions.domain.EraType;
+import org.cardanofoundation.conversions.domain.GenesisPaths;
 import org.cardanofoundation.conversions.domain.NetworkType;
 
 public final class ClasspathConversionsFactory {
@@ -21,8 +22,11 @@ public final class ClasspathConversionsFactory {
 
         var byronLink = loader.getResource(getGenesisEraClasspathLink(Byron, networkType));
         var shelleyLink = loader.getResource(getGenesisEraClasspathLink(Shelley, networkType));
+        var genesisPaths = new GenesisPaths(networkType, byronLink, shelleyLink);
 
-        yield new ConversionsConfig(networkType, byronLink, shelleyLink);
+        var eraHistory = EraLineFactory.create(genesisPaths);
+
+        yield new ConversionsConfig(networkType, genesisPaths, eraHistory);
       }
 
       default -> throw new IllegalStateException("Unsupported network type: " + networkType);

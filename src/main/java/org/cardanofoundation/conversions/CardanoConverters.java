@@ -7,6 +7,6 @@ import org.cardanofoundation.conversions.converters.TimeConversions;
 public record CardanoConverters(
     ConversionsConfig conversionsConfig,
     GenesisConfig genesisConfig,
-    EpochConversions epochConversions,
-    SlotConversions slotConversions,
-    TimeConversions timeConversions) {}
+    EpochConversions epoch,
+    SlotConversions slot,
+    TimeConversions time) {}

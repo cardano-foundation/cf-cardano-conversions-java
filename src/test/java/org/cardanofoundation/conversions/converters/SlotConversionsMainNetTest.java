@@ -21,7 +21,7 @@ class SlotConversionsMainNetTest {
   public void setup() {
     var converters = ClasspathConversionsFactory.createConverters(MAINNET);
     genesisConfig = converters.genesisConfig();
-    slotConversions = converters.slotConversions();
+    slotConversions = converters.slot();
   }
 
   @Test

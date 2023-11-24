@@ -17,11 +17,11 @@ class ClasspathConversionsConfigPreProdFactoryTest {
 
   @Test
   public void testByronGenesisClasspathFileReading() {
-    assertThat(classpathConversionsConfigFactory.byronGenesisFile()).isNotNull();
+    assertThat(classpathConversionsConfigFactory.genesisPaths().byronLink()).isNotNull();
   }
 
   @Test
   public void testShelleyGenesisClasspathFileReading() {
-    assertThat(classpathConversionsConfigFactory.shelleyGenesisFile()).isNotNull();
+    assertThat(classpathConversionsConfigFactory.genesisPaths().shelleyLink()).isNotNull();
   }
 }

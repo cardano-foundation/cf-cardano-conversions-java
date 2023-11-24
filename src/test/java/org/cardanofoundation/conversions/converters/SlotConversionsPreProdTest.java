@@ -17,7 +17,7 @@ class SlotConversionsPreProdTest {
   @BeforeEach
   public void setup() {
     var converters = ClasspathConversionsFactory.createConverters(PREPROD);
-    slotConversions = converters.slotConversions();
+    slotConversions = converters.slot();
   }
 
   @Test

@@ -15,7 +15,7 @@ class TimeConversionsMainNetTest {
   @BeforeEach
   public void setup() {
     var converters = ClasspathConversionsFactory.createConverters(MAINNET);
-    timeConversions = converters.timeConversions();
+    timeConversions = converters.time();
   }
 
   @Test

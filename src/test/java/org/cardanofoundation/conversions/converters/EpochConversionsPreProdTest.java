@@ -19,7 +19,7 @@ class EpochConversionsPreProdTest {
   @BeforeEach
   public void setup() {
     var converters = ClasspathConversionsFactory.createConverters(PREPROD);
-    epochConversions = converters.epochConversions();
+    epochConversions = converters.epoch();
   }
 
   @Test

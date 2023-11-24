@@ -2,7 +2,7 @@ package org.cardanofoundation.conversions.domain;
 
 import java.util.Optional;
 
-public record EraLine(
+public record EraHistoryItem(
     Phase phase,
     Era era,
     long firstRealSlotNo,

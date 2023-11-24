@@ -40,15 +40,15 @@ implementation("org.cardanofoundation:cf-cardano-conversions-java:0.1-SNAPSHOT")
 ```java
 var converters = ClasspathConversionsFactory.createConverters(NetworkType.MAINNET);
 
-var epochStartTime = converters.epochConversions().epochToUTCTime(445, EpochOffset.START);
-var utcTime = converters.slotConversions().slotToTime(109090938L);
-var epochNo = converters.timeConversions().utcTimeToEpochNo(LocalDateTime.of(2023, 11, 22, 9, 48, 58));
-var lastAlonzoAbsoluteSlot = converters.epochConversions().epochToAbsoluteSlot(364, EpochOffset.END);
+var epochStartTime = converters.epoch().epochToUTCTime(445, EpochOffset.START);
+var lastAlonzoAbsoluteSlot = converters.epoch().epochToAbsoluteSlot(364, EpochOffset.END);
+var utcTime = converters.slot().slotToTime(109090938L);
+var epochNo = converters.time().utcTimeToEpochNo(LocalDateTime.of(2023, 11, 22, 9, 48, 58));
 
 System.out.println(epochStartTime); // LocalDateTime.of(2023, 10, 27, 21, 44, 51)
+System.out.println(lastAlonzoAbsoluteSlot); // 72316799L
 System.out.println(utcTime); // LocalDateTime.of(2023, 11, 22, 12, 47, 9)
 System.out.println(epochNo); // 450
-System.out.println(lastAlonzoAbsoluteSlot); // 72316799L
 ```
 
 ## Additional Docs

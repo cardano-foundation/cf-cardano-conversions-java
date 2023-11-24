@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.cardanofoundation.conversions.domain.ByronGenesis;
-import org.cardanofoundation.conversions.domain.EraLine;
+import org.cardanofoundation.conversions.domain.EraHistoryItem;
 import org.cardanofoundation.conversions.domain.EraType;
 import org.cardanofoundation.conversions.domain.ShelleyGenesis;
 
@@ -45,8 +45,8 @@ public class GenesisConfig {
     this.conversionsConfig = conversionsConfig;
     this.objectMapper = objectMapper;
 
-    var byronGenesis = parseByronGenesisFile(conversionsConfig.byronGenesisFile());
-    var shelleyGenesis = parseShelleyGenesisFile(conversionsConfig.shelleyGenesisFile());
+    var byronGenesis = parseByronGenesisFile(conversionsConfig.genesisPaths().byronLink());
+    var shelleyGenesis = parseShelleyGenesisFile(conversionsConfig.genesisPaths().shelleyLink());
 
     var distinctProtocolMagics =
         Stream.of(
@@ -109,8 +109,10 @@ public class GenesisConfig {
   }
 
   public int firstShelleyEpochNo() {
-    return EraHistory.findFirstByEra(Shelley, conversionsConfig)
-        .map(EraLine::startEpochNo)
+    return conversionsConfig
+        .eraHistory()
+        .findFirstByEra(Shelley)
+        .map(EraHistoryItem::startEpochNo)
         .orElseThrow(() -> new ConversionRuntimeException("Shelley era not found!"));
   }
 

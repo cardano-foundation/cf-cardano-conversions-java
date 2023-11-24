@@ -24,7 +24,7 @@ class EpochConversionsMainNetTest {
   public void setup() {
     var converters = ClasspathConversionsFactory.createConverters(MAINNET);
     genesisConfig = converters.genesisConfig();
-    epochConversions = converters.epochConversions();
+    epochConversions = converters.epoch();
   }
 
   @Test
