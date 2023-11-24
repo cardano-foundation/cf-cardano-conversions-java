@@ -45,7 +45,9 @@ public class GenesisConfig {
   @Getter private EraHistory eraHistory;
 
   public GenesisConfig(
-      ConversionsConfig conversionsConfig, EraHistory eraHistory, ObjectMapper objectMapper) {
+      ConversionsConfig conversionsConfig,
+      EraHistory eraHistory,
+      ObjectMapper objectMapper) {
     this.conversionsConfig = conversionsConfig;
     this.eraHistory = eraHistory;
     this.objectMapper = objectMapper;

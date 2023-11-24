@@ -38,7 +38,7 @@ public final class ClasspathConversionsFactory {
   public static CardanoConverters createConverters(
       NetworkType networkType, ObjectMapper objectMapper) {
     var conversionsConfig = ClasspathConversionsFactory.create(networkType);
-    var eraHistory = EraHistoryFactory.create(conversionsConfig.genesisPaths());
+    var eraHistory = StaticEraHistoryFactory.create(conversionsConfig.genesisPaths());
 
     var genesisConfig = new GenesisConfig(conversionsConfig, eraHistory, objectMapper);
 

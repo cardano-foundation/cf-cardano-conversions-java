@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import org.cardanofoundation.conversions.domain.*;
 
-public class EraHistoryFactory {
+public class StaticEraHistoryFactory {
 
   public static EraHistory create(GenesisPaths genesisPaths) {
     return switch (genesisPaths.networkType()) {
