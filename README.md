@@ -28,12 +28,12 @@ Maven:
 <dependency>
     <groupId>org.cardanofoundation</groupId>
     <artifactId>cf-cardano-conversions-java</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 Gradle:
 ```
-implementation("org.cardanofoundation:cf-cardano-conversions-java:0.1-SNAPSHOT")
+implementation("org.cardanofoundation:cf-cardano-conversions-java:1.0.0")
 ```
 
 ## Example usages:
