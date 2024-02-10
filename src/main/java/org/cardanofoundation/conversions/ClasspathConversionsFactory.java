@@ -5,6 +5,7 @@ import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cardanofoundation.conversions.converters.EpochConversions;
+import org.cardanofoundation.conversions.converters.EraConversions;
 import org.cardanofoundation.conversions.converters.SlotConversions;
 import org.cardanofoundation.conversions.converters.TimeConversions;
 import org.cardanofoundation.conversions.domain.EraType;
@@ -45,9 +46,16 @@ public final class ClasspathConversionsFactory {
     var slotConversions = new SlotConversions(genesisConfig);
     var epochConversions = new EpochConversions(genesisConfig, slotConversions);
     var timeConversions = new TimeConversions(genesisConfig, slotConversions);
+    var eraConversions = new EraConversions(genesisConfig, slotConversions);
 
     return new CardanoConverters(
-        conversionsConfig, genesisConfig, epochConversions, slotConversions, timeConversions);
+        conversionsConfig,
+            genesisConfig,
+            epochConversions,
+            slotConversions,
+            timeConversions,
+            eraConversions
+    );
   }
 
   private static String getGenesisEraClasspathLink(EraType era, NetworkType networkType) {
