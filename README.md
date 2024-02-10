@@ -44,11 +44,15 @@ var epochStartTime = converters.epoch().beginningOfEpochToUTCTime(445);
 var utcTime = converters.slot().slotToTime(109090938L);
 var epochNo = converters.time().utcTimeToEpochNo(LocalDateTime.of(2023, 11, 22, 9, 48, 58));
 var lastAlonzoAbsoluteSlot = converters.epoch().endingOfEpochToAbsoluteSlot(364);
+var firstRealAbsoluteSlotBabbage = converters.era().firstRealSlot(EraType.Babbage);
+var firstRealTimeBabbage = converters.era().firstRealEraTime(EraType.Babbage);
 
 System.out.println(epochStartTime); // LocalDateTime.of(2023, 10, 27, 21, 44, 51)
 System.out.println(utcTime); // LocalDateTime.of(2023, 11, 22, 12, 47, 9)
 System.out.println(epochNo); // 450
 System.out.println(lastAlonzoAbsoluteSlot); // 72316799L
+System.out.println(firstRealAbsoluteSlotBabbage); // 72316896L
+System.out.println(firstRealTimeBabbage); // LocalDateTime.of(2022, 9, 22, 21, 46, 27)
 ```
 
 ## Additional Docs
