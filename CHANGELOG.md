@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.0.0...v1.1.0) (2024-02-19)
+
+
+### Features
+
+* EraConversions support ([#6](https://github.com/cardano-foundation/cf-cardano-conversions-java/issues/6)) ([84a26a3](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/84a26a3fc573e5dd10ac38252dc4786e23053b07))
+
+
+### Documentation
+
+* better documentation. ([27b347c](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/27b347c72c788f3c416feff20b614600e251d3ce))
+* gradle / maven: updated version information ([d3e18f7](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/d3e18f78f4b6c12c9c05e5b42ccc99ab0f7c72c3))
+
 ## 1.0.0 (2023-11-27)
 
 
