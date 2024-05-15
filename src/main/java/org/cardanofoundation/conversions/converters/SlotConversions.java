@@ -1,9 +1,10 @@
 package org.cardanofoundation.conversions.converters;
 
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.cardanofoundation.conversions.GenesisConfig;
 import org.cardanofoundation.conversions.domain.EraType;
+
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 public class SlotConversions {
@@ -26,4 +27,14 @@ public class SlotConversions {
     // for now post byron we have 1 slot = 1 second
     return genesisConfig.blockTime(EraType.Shelley, absoluteSlot);
   }
+
+    public Long slotToEpoch(long absoluteSlot) {
+
+        var shelleyRelativeSlot = absoluteSlot - genesisConfig.firstShelleySlot();
+        var numFullEpochs = shelleyRelativeSlot / genesisConfig.getShelleyEpochLength();
+
+        return genesisConfig.firstShelleyEpochNo() + numFullEpochs;
+
+    }
+
 }
