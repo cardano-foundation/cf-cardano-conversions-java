@@ -93,7 +93,4 @@ class SlotConversionsMainNetTest {
     var slot = 44237054L;
     assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(300);
   }
-
-  @Test
-  public void something() {}
 }
