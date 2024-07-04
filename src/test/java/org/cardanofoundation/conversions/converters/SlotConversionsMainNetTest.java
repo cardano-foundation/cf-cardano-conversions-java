@@ -9,6 +9,8 @@ import org.cardanofoundation.conversions.ClasspathConversionsFactory;
 import org.cardanofoundation.conversions.GenesisConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 @Slf4j
 class SlotConversionsMainNetTest {
@@ -48,48 +50,18 @@ class SlotConversionsMainNetTest {
         .isEqualTo(LocalDateTime.of(2023, 11, 22, 12, 47, 9));
   }
 
-  @Test
-  public void slot1IsEpoch0() {
-    assertThat(slotConversions.slotToEpoch(1)).isEqualTo(0);
-  }
-
-  @Test
-  public void slot21599IsEpoch0() {
-    assertThat(slotConversions.slotToEpoch(21599)).isEqualTo(0);
-  }
-
-  @Test
-  public void slot21600IsEpoch1() {
-    assertThat(slotConversions.slotToEpoch(21600)).isEqualTo(1);
-  }
-
-  @Test
-  public void testLastByronSlot() {
-    var slot = 4492799L;
-    assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(207);
-  }
-
-  @Test
-  public void testFirstShelleySlot() {
-    var slot = 4492800L;
-    assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(208);
-  }
-
-  @Test
-  public void testEpoch208() {
-    var slot = 4492801L;
-    assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(208);
-  }
-
-  @Test
-  public void testEpoch209() {
-    var slot = 4492800L + genesisConfig.getShelleyEpochLength();
-    assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(209);
-  }
-
-  @Test
-  public void testEpoch300() {
-    var slot = 44237054L;
-    assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(300);
+  @ParameterizedTest
+  @CsvSource({
+    "1,0",
+    "21599,0", // last slot epoch 0
+    "21600,1", // first slot epoch 1
+    "4492799,207", // last byron slot
+    "4492800,208", // first shelley slot
+    "4492801,208",
+    "4924800,209",
+    "44237054,300",
+  })
+  public void slotToEpoch(long slot, long epoch) {
+    assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(epoch);
   }
 }

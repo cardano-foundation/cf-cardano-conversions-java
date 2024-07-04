@@ -8,6 +8,8 @@ import org.cardanofoundation.conversions.ClasspathConversionsFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class TimeConversionsMainNetTest {
 
@@ -62,15 +64,14 @@ class TimeConversionsMainNetTest {
         () -> timeConversions.toSlot(LocalDateTime.of(2015, 10, 3, 21, 44, 11)));
   }
 
-  @Test
-  public void dateTimeToSlotInByron() {
-    var actualSlot = timeConversions.toSlot(LocalDateTime.of(2017, 10, 3, 21, 44, 11));
-    assertThat(actualSlot).isEqualTo(43198L);
-  }
-
-  @Test
-  public void dateTimeToSlotInShelley() {
-    var actualSlot = timeConversions.toSlot(LocalDateTime.of(2023, 11, 22, 12, 47, 9));
-    assertThat(actualSlot).isEqualTo(109090938L);
+  @ParameterizedTest
+  @CsvSource({
+    "2017-10-03T21:44:11,43198", // Byron
+    "2023-11-22T12:47:09,109090938", // Shelley
+    "2020-07-29T21:44:31,4492799", // Last Byron
+    "2020-07-29T21:44:51,4492800", // First Shelley
+  })
+  public void slotToEpoch(String dateTime, long epoch) {
+    assertThat(timeConversions.toSlot(LocalDateTime.parse(dateTime))).isEqualTo(epoch);
   }
 }
