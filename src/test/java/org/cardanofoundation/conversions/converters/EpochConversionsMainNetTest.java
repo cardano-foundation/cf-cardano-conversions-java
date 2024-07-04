@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.cardanofoundation.conversions.ClasspathConversionsFactory;
 import org.cardanofoundation.conversions.GenesisConfig;
-import org.cardanofoundation.conversions.domain.EraType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,8 +34,7 @@ class EpochConversionsMainNetTest {
     assertThat(epochConversions.epochToAbsoluteSlot(176, START)).isEqualTo(slot);
   }
 
-
-    @Test
+  @Test
   public void testConvertByronEpochToSlot() {
     assertThat(epochConversions.epochToAbsoluteSlot(207, START)).isEqualTo(4471200);
     assertThat(epochConversions.epochToAbsoluteSlot(207, END)).isEqualTo(4492799L);

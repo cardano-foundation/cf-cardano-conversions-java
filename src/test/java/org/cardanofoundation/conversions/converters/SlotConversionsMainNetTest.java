@@ -1,15 +1,15 @@
 package org.cardanofoundation.conversions.converters;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
+
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.cardanofoundation.conversions.ClasspathConversionsFactory;
 import org.cardanofoundation.conversions.GenesisConfig;
+import org.cardanofoundation.conversions.exceptioni.UnsupportedConversionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 @Slf4j
 class SlotConversionsMainNetTest {
@@ -50,26 +50,50 @@ class SlotConversionsMainNetTest {
   }
 
   @Test
-  public void testFirstShelleySlot() {
+  public void slot1IsEpoch0() throws UnsupportedConversionException {
+    assertThat(slotConversions.slotToEpoch(1)).isEqualTo(0);
+  }
+
+  @Test
+  public void slot21599IsEpoch0() throws UnsupportedConversionException {
+    assertThat(slotConversions.slotToEpoch(21599)).isEqualTo(0);
+  }
+
+  @Test
+  public void slot21600IsEpoch1() throws UnsupportedConversionException {
+    assertThat(slotConversions.slotToEpoch(21600)).isEqualTo(1);
+  }
+
+  @Test
+  public void testLastByronSlot() throws UnsupportedConversionException {
+    var slot = 4492799L;
+    assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(207);
+  }
+
+  @Test
+  public void testFirstShelleySlot() throws UnsupportedConversionException {
     var slot = 4492800L;
     assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(208);
   }
+
   @Test
-  public void testEpoch208() {
+  public void testEpoch208() throws UnsupportedConversionException {
     var slot = 4492801L;
     assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(208);
   }
+
   @Test
-  public void testEpoch209() {
+  public void testEpoch209() throws UnsupportedConversionException {
     var slot = 4492800L + genesisConfig.getShelleyEpochLength();
     assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(209);
   }
+
   @Test
-  public void testEpoch300() {
+  public void testEpoch300() throws UnsupportedConversionException {
     var slot = 44237054L;
     assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(300);
   }
 
-
-
+  @Test
+  public void something() {}
 }

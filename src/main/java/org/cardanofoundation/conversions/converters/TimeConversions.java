@@ -5,9 +5,12 @@ import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import org.cardanofoundation.conversions.GenesisConfig;
 import org.cardanofoundation.conversions.domain.EraType;
+import org.cardanofoundation.conversions.exceptioni.InvalidConversionException;
+import org.cardanofoundation.conversions.exceptioni.UnsupportedConversionException;
 
 @RequiredArgsConstructor
 public class TimeConversions {
@@ -54,5 +57,27 @@ public class TimeConversions {
 
     return (int)
         Math.ceil((double) (diffDurationSeconds / slotsPerEpoch / byronSlotsLengthSeconds));
+  }
+
+  /**
+   * @param utcTime the time to convert into a slot
+   * @return the slot corresponding the time passed as input (this might not coincide with a block)
+   * @throws UnsupportedConversionException if the time to be converted falls before the Shelley Era
+   */
+  public Long toSlot(LocalDateTime utcTime)
+      throws UnsupportedConversionException, InvalidConversionException {
+
+    if (utcTime.isBefore(genesisConfig.getStartTime())) {
+      throw new InvalidConversionException("Required that falls before start of the blockchain");
+    } else if (utcTime.isBefore(genesisConfig.getShelleyStartTime())) {
+      var secondsSinceByronBegin =
+          ChronoUnit.SECONDS.between(genesisConfig.getStartTime(), utcTime);
+      return secondsSinceByronBegin / genesisConfig.slotDuration(Byron).getSeconds();
+    } else {
+      var secondsSinceShelleyBegin =
+          ChronoUnit.SECONDS.between(genesisConfig.getShelleyStartTime(), utcTime);
+      return genesisConfig.firstShelleySlot()
+          + secondsSinceShelleyBegin / genesisConfig.slotDuration(Shelley).getSeconds();
+    }
   }
 }

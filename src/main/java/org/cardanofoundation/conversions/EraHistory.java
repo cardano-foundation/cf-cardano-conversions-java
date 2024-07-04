@@ -7,9 +7,8 @@ import org.cardanofoundation.conversions.domain.EraHistoryItem;
 import org.cardanofoundation.conversions.domain.EraType;
 
 /**
- * Data sources:
- * - https://cips.cardano.org/cips/cip59/feature-table.md.html -
- * - https://cardanosolutions.github.io/kupo/#section/Rollbacks-and-chain-forks/How-Kupo-deals-with-rollbacks
+ * Data sources: - https://cips.cardano.org/cips/cip59/feature-table.md.html - -
+ * https://cardanosolutions.github.io/kupo/#section/Rollbacks-and-chain-forks/How-Kupo-deals-with-rollbacks
  */
 @RequiredArgsConstructor
 public class EraHistory {

@@ -5,6 +5,8 @@ import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 import java.time.LocalDateTime;
 import org.cardanofoundation.conversions.ClasspathConversionsFactory;
+import org.cardanofoundation.conversions.exceptioni.InvalidConversionException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -52,5 +54,24 @@ class TimeConversionsMainNetTest {
   public void testBabbageEra1() {
     assertThat(timeConversions.utcTimeToEpochNo(LocalDateTime.of(2023, 11, 22, 9, 48, 58)))
         .isEqualTo(450);
+  }
+
+  @Test
+  public void dateTimeToSlotBeforeBlockchainStartThrowsError() {
+    Assertions.assertThrows(
+        InvalidConversionException.class,
+        () -> timeConversions.toSlot(LocalDateTime.of(2015, 10, 3, 21, 44, 11)));
+  }
+
+  @Test
+  public void dateTimeToSlotInByron() throws Exception {
+    var actualSlot = timeConversions.toSlot(LocalDateTime.of(2017, 10, 3, 21, 44, 11));
+    assertThat(actualSlot).isEqualTo(43198L);
+  }
+
+  @Test
+  public void dateTimeToSlotInShelley() throws Exception {
+    var actualSlot = timeConversions.toSlot(LocalDateTime.of(2023, 11, 22, 12, 47, 9));
+    assertThat(actualSlot).isEqualTo(109090938L);
   }
 }
