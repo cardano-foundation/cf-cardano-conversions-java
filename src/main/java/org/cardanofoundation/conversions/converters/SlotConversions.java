@@ -26,4 +26,26 @@ public class SlotConversions {
     // for now post byron we have 1 slot = 1 second
     return genesisConfig.blockTime(EraType.Shelley, absoluteSlot);
   }
+
+  /**
+   * Computes the epoch a slot falls in.
+   *
+   * @param absoluteSlot the slot number to convert
+   * @return the Era number the slot falls in
+   */
+  public Long slotToEpoch(long absoluteSlot) {
+    if (absoluteSlot < 0L) {
+      throw new IllegalArgumentException("absoluteSlot cannot be negative");
+    }
+
+    long firstShelleySlot = genesisConfig.firstShelleySlot();
+
+    if (absoluteSlot < firstShelleySlot) {
+      return absoluteSlot / genesisConfig.slotsPerEpoch(EraType.Byron);
+    } else {
+      var shelleyRelativeSlot = absoluteSlot - firstShelleySlot;
+      var numFullEpochs = shelleyRelativeSlot / genesisConfig.getShelleyEpochLength();
+      return genesisConfig.firstShelleyEpochNo() + numFullEpochs;
+    }
+  }
 }

@@ -50,12 +50,11 @@ public final class ClasspathConversionsFactory {
 
     return new CardanoConverters(
         conversionsConfig,
-            genesisConfig,
-            epochConversions,
-            slotConversions,
-            timeConversions,
-            eraConversions
-    );
+        genesisConfig,
+        epochConversions,
+        slotConversions,
+        timeConversions,
+        eraConversions);
   }
 
   private static String getGenesisEraClasspathLink(EraType era, NetworkType networkType) {
