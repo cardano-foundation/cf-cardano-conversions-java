@@ -5,7 +5,6 @@ import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 import java.time.LocalDateTime;
 import org.cardanofoundation.conversions.ClasspathConversionsFactory;
-import org.cardanofoundation.conversions.exceptioni.InvalidConversionException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +58,7 @@ class TimeConversionsMainNetTest {
   @Test
   public void dateTimeToSlotBeforeBlockchainStartThrowsError() {
     Assertions.assertThrows(
-        InvalidConversionException.class,
+        IllegalArgumentException.class,
         () -> timeConversions.toSlot(LocalDateTime.of(2015, 10, 3, 21, 44, 11)));
   }
 

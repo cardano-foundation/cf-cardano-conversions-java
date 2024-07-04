@@ -9,7 +9,6 @@ import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import org.cardanofoundation.conversions.GenesisConfig;
 import org.cardanofoundation.conversions.domain.EraType;
-import org.cardanofoundation.conversions.exceptioni.InvalidConversionException;
 
 @RequiredArgsConstructor
 public class TimeConversions {
@@ -61,13 +60,11 @@ public class TimeConversions {
   /**
    * @param utcTime the time to convert into a slot
    * @return the slot corresponding the time passed as input (this might not coincide with a block)
-   * @throws InvalidConversionException if the time to be converted falls before the blockchain
-   *     start time Shelley Era
    */
-  public Long toSlot(LocalDateTime utcTime) throws InvalidConversionException {
+  public Long toSlot(LocalDateTime utcTime) {
 
     if (utcTime.isBefore(genesisConfig.getStartTime())) {
-      throw new InvalidConversionException("Required that falls before start of the blockchain");
+      throw new IllegalArgumentException("Required that falls before start of the blockchain");
     } else if (utcTime.isBefore(genesisConfig.getShelleyStartTime())) {
       var secondsSinceByronBegin =
           ChronoUnit.SECONDS.between(genesisConfig.getStartTime(), utcTime);
