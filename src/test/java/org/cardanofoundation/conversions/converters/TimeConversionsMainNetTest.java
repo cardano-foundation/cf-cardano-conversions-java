@@ -63,13 +63,13 @@ class TimeConversionsMainNetTest {
   }
 
   @Test
-  public void dateTimeToSlotInByron() throws Exception {
+  public void dateTimeToSlotInByron() {
     var actualSlot = timeConversions.toSlot(LocalDateTime.of(2017, 10, 3, 21, 44, 11));
     assertThat(actualSlot).isEqualTo(43198L);
   }
 
   @Test
-  public void dateTimeToSlotInShelley() throws Exception {
+  public void dateTimeToSlotInShelley() {
     var actualSlot = timeConversions.toSlot(LocalDateTime.of(2023, 11, 22, 12, 47, 9));
     assertThat(actualSlot).isEqualTo(109090938L);
   }
