@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.1.0...v1.1.1) (2024-07-08)
+
+
+### Bug Fixes
+
+* attempting to trigger a release ([7d7f41a](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/7d7f41af05d5a18fcb83f712337d9e0ab59fc987))
+
 ## [1.1.0](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.0.0...v1.1.0) (2024-02-19)
 
 
