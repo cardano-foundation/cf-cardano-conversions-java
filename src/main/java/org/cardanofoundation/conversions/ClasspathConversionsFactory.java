@@ -18,7 +18,7 @@ public final class ClasspathConversionsFactory {
 
   public static ConversionsConfig create(NetworkType networkType) {
     return switch (networkType) {
-      case MAINNET, PREPROD -> {
+      case MAINNET, PREPROD, PREVIEW, SANCHONET -> {
         var loader = ClasspathConversionsFactory.class.getClassLoader();
 
         var byronLink = loader.getResource(getGenesisEraClasspathLink(Byron, networkType));
