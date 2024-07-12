@@ -5,6 +5,7 @@ public enum NetworkType {
   LEGACY_TESTNET(1_097_911_063L, 432_000L),
   PREPROD(1L, 432_000L),
   PREVIEW(2L, 86_400L),
+  SANCHONET(4L, 86_400L),
   DEV(42L, 432_000L);
 
   private final long protocolMagic;
