@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.1.2...v1.1.3) (2024-07-16)
+
+
+### Miscellaneous Chores
+
+* release 1.1.3 ([89a4bc3](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/89a4bc359462ba6ecb3ff7b8105f78920d181f9b))
+
 ## [1.1.2](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.1.1...v1.1.2) (2024-07-12)
 
 
