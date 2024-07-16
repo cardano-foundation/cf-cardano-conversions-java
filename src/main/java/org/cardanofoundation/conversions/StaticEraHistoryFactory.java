@@ -1,5 +1,10 @@
 package org.cardanofoundation.conversions;
 
+import org.cardanofoundation.conversions.domain.*;
+
+import java.util.List;
+import java.util.Optional;
+
 import static org.cardanofoundation.conversions.domain.Consensus.*;
 import static org.cardanofoundation.conversions.domain.EraType.Byron;
 import static org.cardanofoundation.conversions.domain.EraType.Shelley;
@@ -7,16 +12,14 @@ import static org.cardanofoundation.conversions.domain.LedgerProtocol.Praos;
 import static org.cardanofoundation.conversions.domain.LedgerProtocol.TPraos;
 import static org.cardanofoundation.conversions.domain.ProtocolVersion.*;
 
-import java.util.List;
-import java.util.Optional;
-import org.cardanofoundation.conversions.domain.*;
-
 public class StaticEraHistoryFactory {
 
   public static EraHistory create(GenesisPaths genesisPaths) {
     return switch (genesisPaths.networkType()) {
       case MAINNET -> new EraHistory(mainnet(genesisPaths));
       case PREPROD -> new EraHistory(preprod(genesisPaths));
+      case PREVIEW -> new EraHistory(preview(genesisPaths));
+      case SANCHONET -> new EraHistory(sanchonet(genesisPaths));
       default -> new EraHistory(List.of());
     };
   }
@@ -223,5 +226,41 @@ public class StaticEraHistoryFactory {
             Optional.of(Praos),
             Ouroboros_Praos,
             true));
+  }
+  private static List<EraHistoryItem> preview(GenesisPaths genesisPaths) {
+    return List.of(
+        new EraHistoryItem(
+            Phase.Shelley,
+            new Era(Shelley, Optional.of(genesisPaths.shelleyLink())),
+            0L, // TODO find out this value based on some explorer data
+            Optional.empty(),
+            0L,
+                Optional.empty(),
+            0,
+                Optional.empty(),
+            VER_6_0,
+            Optional.of(Praos),
+            Ouroboros_Praos,
+            false)
+    );
+
+  }
+  private static List<EraHistoryItem> sanchonet(GenesisPaths genesisPaths) {
+    return List.of(
+        new EraHistoryItem(
+            Phase.Shelley,
+            new Era(Shelley, Optional.of(genesisPaths.shelleyLink())),
+            0L, // TODO find out this value based on some explorer data
+            Optional.empty(),
+            0L,
+                Optional.empty(),
+            0,
+                Optional.empty(),
+            VER_6_0,
+            Optional.of(Praos),
+            Ouroboros_Praos,
+            false)
+    );
+
   }
 }
