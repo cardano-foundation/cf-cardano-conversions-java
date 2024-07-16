@@ -1,18 +1,16 @@
 package org.cardanofoundation.conversions;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.cardanofoundation.conversions.domain.EraType.*;
+import static org.cardanofoundation.conversions.domain.NetworkType.PREVIEW;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.cardanofoundation.conversions.domain.EraType.*;
-import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
-import static org.cardanofoundation.conversions.domain.NetworkType.PREVIEW;
 
 @Slf4j
 class GenesisConfigPreviewTest {
@@ -81,7 +79,7 @@ class GenesisConfigPreviewTest {
 
   @Test
   public void testNetworkStartTime() {
-    assertThat(genesisConfig.getStartTime()).isEqualTo(LocalDateTime.of(2022, 10, 25, 0,0,0));
+    assertThat(genesisConfig.getStartTime()).isEqualTo(LocalDateTime.of(2022, 10, 25, 0, 0, 0));
   }
 
   @Test
@@ -97,13 +95,13 @@ class GenesisConfigPreviewTest {
   @Test
   public void testShelleyStartTime() {
     assertThat(genesisConfig.getShelleyStartTime())
-        .isEqualTo(LocalDateTime.of(2022, 10,25,0,0,0));
+        .isEqualTo(LocalDateTime.of(2022, 10, 25, 0, 0, 0));
   }
 
   @Test
   // proposal reveal time for Cardano Summit Awards 2023
   public void testBlockTimeNetwork() {
     assertThat(genesisConfig.blockTime(Shelley, 46755827L))
-        .isEqualTo(LocalDateTime.of(2024, 4, 18, 3,43,47));
+        .isEqualTo(LocalDateTime.of(2024, 4, 18, 3, 43, 47));
   }
 }
