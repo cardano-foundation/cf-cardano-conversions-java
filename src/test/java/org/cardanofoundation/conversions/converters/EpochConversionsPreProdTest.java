@@ -39,4 +39,18 @@ class EpochConversionsPreProdTest {
     assertThat(epochConversions.epochToUTCTime(103, END))
         .isEqualTo(LocalDateTime.of(2023, 11, 2, 23, 59, 59));
   }
+
+  @Test
+  public void testConwayEraStart() {
+    var slot = 68_774_400L;
+
+    assertThat(epochConversions.epochToAbsoluteSlot(163, START)).isEqualTo(slot);
+  }
+
+  @Test
+  public void testBabbageEraEnd() {
+    var slot = 68_774_399L;
+
+    assertThat(epochConversions.endingOfEpochToAbsoluteSlot(162)).isEqualTo(slot);
+  }
 }

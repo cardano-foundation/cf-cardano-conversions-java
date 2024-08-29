@@ -6,5 +6,6 @@ public enum EraType {
   Allegra,
   Mary,
   Alonzo,
-  Babbage;
+  Babbage,
+  Conway,
 }

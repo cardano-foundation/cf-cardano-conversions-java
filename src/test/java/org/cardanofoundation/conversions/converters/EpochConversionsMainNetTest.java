@@ -131,6 +131,16 @@ class EpochConversionsMainNetTest {
   }
 
   @Test
+  public void testBabbageEraEnd() {
+    assertThat(epochConversions.epochToAbsoluteSlot(506, END)).isEqualTo(133660799L);
+  }
+
+  @Test
+  public void testConwayEraStart() {
+    assertThat(epochConversions.epochToAbsoluteSlot(507, START)).isEqualTo(133660800L);
+  }
+
+  @Test
   public void testShelleyEraEpochStartTime() {
     assertThat(epochConversions.epochToUTCTime(208, START))
         .isEqualTo(LocalDateTime.of(2020, 7, 29, 21, 44, 51));
