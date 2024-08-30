@@ -10,4 +10,5 @@ public enum ProtocolVersion {
   VER_6_0,
   VER_7_0,
   VER_8_0,
+  VER_9_1,
 }

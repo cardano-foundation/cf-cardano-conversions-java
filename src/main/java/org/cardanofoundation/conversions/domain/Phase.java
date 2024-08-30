@@ -4,4 +4,5 @@ public enum Phase {
   Byron,
   Shelley,
   Gougen,
+  Voltaire,
 }
