@@ -123,7 +123,7 @@ public class MainNetEraHistoryFactory {
             Phase.Gougen,
             Era.noGenesis(EraType.Babbage),
             84_844_885L,
-            Optional.empty(), // TODO we don't know this value yet, update when Conway starts
+            Optional.of(133_660_799L), // https://cardanoscan.io/block/10781330
             84_844_800L,
             Optional.of(108_172_800L - 1L),
             394,
@@ -135,7 +135,7 @@ public class MainNetEraHistoryFactory {
         new EraHistoryItem(
             Phase.Voltaire,
             Era.noGenesis(EraType.Conway),
-            68_774_413L, // TODO we don't know this value yet
+            133_660_855L, // https://cardanoscan.io/block/10781331
             Optional
                 .empty(), // Conway era is an active era soon, and we don't know when it ends yet
             133_660_800L,
