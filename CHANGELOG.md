@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.1.3...v1.2.0) (2024-09-02)
+
+
+### Features
+
+* Conway era support for pre-prod and initial one for mainnet (needs some update after Chang HFC first block is minted. ([#18](https://github.com/cardano-foundation/cf-cardano-conversions-java/issues/18)) ([0e49a20](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/0e49a204b2f8d4cdbab64dd862606b41bc6e8371))
+* conway real slots on main-net. ([#20](https://github.com/cardano-foundation/cf-cardano-conversions-java/issues/20)) ([84f5322](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/84f532260627bd35b714029481c38eeed92db76a))
+
 ## [1.1.3](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.1.2...v1.1.3) (2024-07-16)
 
 
