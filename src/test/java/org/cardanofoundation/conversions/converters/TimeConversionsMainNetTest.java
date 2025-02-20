@@ -2,10 +2,11 @@ package org.cardanofoundation.conversions.converters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDateTime;
+import org.cardanofoundation.conversions.CardanoConverters;
 import org.cardanofoundation.conversions.ClasspathConversionsFactory;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,10 +15,11 @@ import org.junit.jupiter.params.provider.CsvSource;
 class TimeConversionsMainNetTest {
 
   private static TimeConversions timeConversions;
+  private CardanoConverters converters;
 
   @BeforeEach
   public void setup() {
-    var converters = ClasspathConversionsFactory.createConverters(MAINNET);
+    converters = ClasspathConversionsFactory.createConverters(MAINNET);
     timeConversions = converters.time();
   }
 
@@ -58,8 +60,24 @@ class TimeConversionsMainNetTest {
   }
 
   @Test
+  public void testOldDate() {
+    IllegalArgumentException thrownException =
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> {
+              timeConversions.toSlot(LocalDateTime.of(1979, 10, 3, 21, 44, 11));
+            });
+  }
+
+  @Test
+  public void testShelleyTime() {
+    assertThat(timeConversions.toSlot(converters.genesisConfig().getShelleyStartTime()))
+        .isEqualTo(4492800L);
+  }
+
+  @Test
   public void dateTimeToSlotBeforeBlockchainStartThrowsError() {
-    Assertions.assertThrows(
+    assertThrows(
         IllegalArgumentException.class,
         () -> timeConversions.toSlot(LocalDateTime.of(2015, 10, 3, 21, 44, 11)));
   }
@@ -71,7 +89,7 @@ class TimeConversionsMainNetTest {
     "2020-07-29T21:44:31,4492799", // Last Byron
     "2020-07-29T21:44:51,4492800", // First Shelley
   })
-  public void slotToEpoch(String dateTime, long epoch) {
-    assertThat(timeConversions.toSlot(LocalDateTime.parse(dateTime))).isEqualTo(epoch);
+  public void dateToSlot(String dateTime, long absoluteSlot) {
+    assertThat(timeConversions.toSlot(LocalDateTime.parse(dateTime))).isEqualTo(absoluteSlot);
   }
 }
