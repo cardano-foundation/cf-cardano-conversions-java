@@ -25,14 +25,18 @@ public class TimeConversions {
    */
   public int utcTimeToEpochNo(LocalDateTime utcTime) {
     var lastGenesisSlot = genesisConfig.lastByronSlot();
-    var lastByronSlotTime = slotsConversions.slotToTime(lastGenesisSlot);
+    var lastByronSlotTime =
+        slotsConversions.slotToTime(lastGenesisSlot).plus(genesisConfig.getByronSlotLength());
 
     if (utcTime.isBefore(lastByronSlotTime)) {
       return utcTimeToEpochNo(Byron, utcTime);
     }
 
     var lastByronEpoch = genesisConfig.lastByronEpochNo();
-    var lastByronTime = slotsConversions.slotToTime(genesisConfig.lastByronSlot());
+    var lastByronTime =
+        slotsConversions
+            .slotToTime(genesisConfig.lastByronSlot())
+            .plus(genesisConfig.getByronSlotLength());
 
     var diffDuration = Duration.between(lastByronTime, utcTime);
     var diffDurationSeconds = diffDuration.getSeconds();
