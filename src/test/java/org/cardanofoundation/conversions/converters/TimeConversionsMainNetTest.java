@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
 import java.time.LocalDateTime;
+import lombok.extern.slf4j.Slf4j;
 import org.cardanofoundation.conversions.ClasspathConversionsFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+@Slf4j
 class TimeConversionsMainNetTest {
 
   private static TimeConversions timeConversions;
@@ -41,8 +43,8 @@ class TimeConversionsMainNetTest {
 
   @Test
   public void testByronEraAfterByron() {
-    assertThat(timeConversions.utcTimeToEpochNo(LocalDateTime.of(2020, 7, 29, 21, 44, 32)))
-        .isEqualTo(208);
+    assertThat(timeConversions.utcTimeToEpochNo(LocalDateTime.of(2020, 7, 29, 21, 44, 50)))
+        .isEqualTo(207);
   }
 
   @Test
