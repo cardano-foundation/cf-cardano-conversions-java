@@ -25,20 +25,18 @@ public class TimeConversions {
    */
   public int utcTimeToEpochNo(LocalDateTime utcTime) {
     var lastGenesisSlot = genesisConfig.lastByronSlot();
-    var lastByronSlotTime =
-        slotsConversions.slotToTime(lastGenesisSlot).plus(genesisConfig.getByronSlotLength());
+    var lastByronSlotTime = slotsConversions.slotToTime(lastGenesisSlot);
+    var endLastByronSlotTime = lastByronSlotTime.plus(genesisConfig.getByronSlotLength());
 
-    if (utcTime.isBefore(lastByronSlotTime)) {
+    if (utcTime.isBefore(endLastByronSlotTime)) {
       return utcTimeToEpochNo(Byron, utcTime);
     }
 
     var lastByronEpoch = genesisConfig.lastByronEpochNo();
-    var lastByronTime =
-        slotsConversions
-            .slotToTime(genesisConfig.lastByronSlot())
-            .plus(genesisConfig.getByronSlotLength());
+    var lastByronTime = slotsConversions.slotToTime(genesisConfig.lastByronSlot());
+    var endLastByronTime = lastByronTime.plus(genesisConfig.getByronSlotLength());
 
-    var diffDuration = Duration.between(lastByronTime, utcTime);
+    var diffDuration = Duration.between(endLastByronTime, utcTime);
     var diffDurationSeconds = diffDuration.getSeconds();
     var slotsPerEpoch = genesisConfig.slotsPerEpoch(Shelley);
     var shelleyEraLength = genesisConfig.getShelleySlotLength();
