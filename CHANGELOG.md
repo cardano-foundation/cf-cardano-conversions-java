@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.2.0...v1.2.1) (2025-10-02)
+
+
+### Bug Fixes
+
+* fixed formula to ensure last 20 seconds of an epoch belong to current epoch ([#25](https://github.com/cardano-foundation/cf-cardano-conversions-java/issues/25)) ([01f5b43](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/01f5b43cd6d81b9121410bd8607952bbe8bb5370))
+
 ## [1.2.0](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.1.3...v1.2.0) (2024-09-02)
 
 
