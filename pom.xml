@@ -127,11 +127,28 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>0.9.0</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <publishingServerId>central</publishingServerId>
+                            <autoPublish>true</autoPublish>
+                            <waitUntil>published</waitUntil>
+                        </configuration>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
     </profiles>
 
+    <!--
+    Distribution management is handled by the central-publishing-maven-plugin.
+    The plugin creates a bundle and uploads it directly to the Maven Central Portal.
+    See: https://central.sonatype.org/publish/publish-portal-maven/
+    -->
+    <!--
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -142,6 +159,7 @@
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
+    -->
 
     <build>
         <resources>
