@@ -19,7 +19,7 @@ public class MainNetEraHistoryFactory {
             Phase.Byron,
             new Era(Byron, Optional.of(genesisPaths.byronLink())),
             0L,
-            Optional.empty(),
+            Optional.of(3_801_599L),
             0L,
             Optional.of(3_801_600L - 1L),
             0,
@@ -84,7 +84,7 @@ public class MainNetEraHistoryFactory {
             Phase.Gougen,
             Era.noGenesis(EraType.Alonzo),
             39_916_975L,
-            Optional.empty(), // TODO: find out this value based on some explorer data
+            Optional.of(43_372_792L),
             39_916_800L,
             Optional.of(43_372_800L - 1L),
             290,
@@ -110,7 +110,7 @@ public class MainNetEraHistoryFactory {
             Phase.Gougen,
             Era.noGenesis(EraType.Babbage),
             72_316_896L,
-            Optional.empty(), // TODO: find out this value based on some explorer data
+            Optional.of(84_844_799L),
             72_316_800L,
             Optional.of(84_844_800L - 1L),
             365,

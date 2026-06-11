@@ -154,11 +154,17 @@ public class GenesisConfig {
     return firstShelleyEpochNo() - 1;
   }
 
+  /**
+   * First epoch of the post-Byron phase. Networks that never ran Byron (e.g. preview, which
+   * launched directly in Alonzo) start in a later era, so this is the start epoch of the first
+   * non-Byron era history item.
+   */
   public int firstShelleyEpochNo() {
-    return eraHistory
-        .findFirstByEra(Shelley)
+    return eraHistory.all().stream()
+        .filter(item -> item.era().eraType() != Byron)
+        .findFirst()
         .map(EraHistoryItem::startEpochNo)
-        .orElseThrow(() -> new ConversionRuntimeException("Shelley era not found!"));
+        .orElseThrow(() -> new ConversionRuntimeException("No post-Byron era found!"));
   }
 
   public long lastByronSlot() {

@@ -14,7 +14,7 @@ import org.cardanofoundation.conversions.domain.*;
 
 public class PreProdEraHistoryFactory {
 
-  // TODO fill out real first and last slot block values for pre-prod (not only theoretical ones)
+  // real first/last block slots verified against on-chain data (Koios), 2026-06
   public static List<EraHistoryItem> eraHistoryItems(GenesisPaths genesisPaths) {
     return List.of(
         new EraHistoryItem(
@@ -33,7 +33,7 @@ public class PreProdEraHistoryFactory {
         new EraHistoryItem(
             Phase.Shelley,
             new Era(Shelley, Optional.of(genesisPaths.shelleyLink())),
-            -1L, // TODO find out this value based on some explorer data
+            86_400L,
             Optional.of(518_360L),
             86_400L,
             Optional.of(518_400L - 1L),
@@ -46,7 +46,7 @@ public class PreProdEraHistoryFactory {
         new EraHistoryItem(
             Phase.Gougen,
             Era.noGenesis(EraType.Allegra),
-            -1L, // TODO find out this value based on some explorer data
+            518_400L,
             Optional.of(950_340L),
             518_400L,
             Optional.of(950_400L - 1L),
@@ -59,7 +59,7 @@ public class PreProdEraHistoryFactory {
         new EraHistoryItem(
             Phase.Gougen,
             Era.noGenesis(EraType.Mary),
-            -1L, // TODO find out this value based on some explorer data
+            950_410L,
             Optional.of(1_382_348L),
             950_400L,
             Optional.of(1_382_400L - 1L),
@@ -72,8 +72,8 @@ public class PreProdEraHistoryFactory {
         new EraHistoryItem(
             Phase.Gougen,
             Era.noGenesis(EraType.Alonzo),
-            -1L, // TODO find out this value based on some explorer data
-            Optional.of(3_542_390L),
+            1_382_422L,
+            Optional.of(3_931_295L),
             1_382_400L,
             Optional.of(3_974_400L - 1L),
             7,
@@ -85,8 +85,8 @@ public class PreProdEraHistoryFactory {
         new EraHistoryItem(
             Phase.Gougen,
             Era.noGenesis(EraType.Babbage),
-            -1L, // TODO find out this value based on some explorer data
-            Optional.empty(),
+            3_974_409L,
+            Optional.of(68_774_372L),
             3_974_400L,
             Optional.of(68_774_400L - 1L),
             13,

@@ -77,8 +77,8 @@ class EraHistoryConsistencyTest {
         }
       }
 
-      // real slots must fall within theoretical bounds (-1 is a documented "unknown" placeholder)
-      if (item.firstRealSlotNo() >= 0 && item.firstRealSlotNo() < item.firstTheoreticalSlotNo()) {
+      // real slots must fall within theoretical bounds
+      if (item.firstRealSlotNo() < item.firstTheoreticalSlotNo()) {
         failures.add(
             id
                 + ": firstRealSlotNo="
