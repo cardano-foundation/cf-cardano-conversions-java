@@ -22,14 +22,14 @@ public class TimeConversions {
    * @return epoch number containing this time
    */
   public int utcTimeToEpochNo(LocalDateTime utcTime) {
-    return slotConversions.slotToEpoch(toSlot(utcTime)).intValue();
+    return slotConversions.slotToEpoch(toSlot(utcTime));
   }
 
   /**
    * @param utcTime the time to convert into a slot, must not be before the network start time
    * @return the slot containing the time passed as input (this might not coincide with a block)
    */
-  public Long toSlot(LocalDateTime utcTime) {
+  public long toSlot(LocalDateTime utcTime) {
     if (utcTime.isBefore(genesisConfig.getStartTime())) {
       throw new IllegalArgumentException(
           "time: %s falls before the start of the blockchain: %s"

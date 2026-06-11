@@ -61,7 +61,7 @@ class SlotConversionsMainNetTest {
     "4924800,209",
     "44237054,300",
   })
-  public void slotToEpoch(long slot, long epoch) {
+  public void slotToEpoch(long slot, int epoch) {
     assertThat(slotConversions.slotToEpoch(slot)).isEqualTo(epoch);
   }
 }
