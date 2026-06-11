@@ -88,7 +88,7 @@ public class PreProdEraHistoryFactory {
             -1L, // TODO find out this value based on some explorer data
             Optional.empty(),
             3_974_400L,
-            Optional.of(68_774_413L - 1L),
+            Optional.of(68_774_400L - 1L),
             13,
             Optional.of(163 - 1),
             VER_8_0,

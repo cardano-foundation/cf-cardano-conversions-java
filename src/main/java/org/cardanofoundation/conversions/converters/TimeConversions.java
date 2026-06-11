@@ -3,79 +3,50 @@ package org.cardanofoundation.conversions.converters;
 import static org.cardanofoundation.conversions.domain.EraType.Byron;
 import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import lombok.RequiredArgsConstructor;
 import org.cardanofoundation.conversions.GenesisConfig;
-import org.cardanofoundation.conversions.domain.EraType;
 
 @RequiredArgsConstructor
 public class TimeConversions {
 
   private final GenesisConfig genesisConfig;
 
-  private final SlotConversions slotsConversions;
+  private final SlotConversions slotConversions;
 
   /**
    * Based on UTC time find out what is the epoch number.
    *
-   * @param utcTime - UTC time
-   * @return epoch number for this time
+   * @param utcTime - UTC time, must not be before the network start time
+   * @return epoch number containing this time
    */
   public int utcTimeToEpochNo(LocalDateTime utcTime) {
-    var lastGenesisSlot = genesisConfig.lastByronSlot();
-    var lastByronSlotTime = slotsConversions.slotToTime(lastGenesisSlot);
-    var endLastByronSlotTime = lastByronSlotTime.plus(genesisConfig.getByronSlotLength());
-
-    if (utcTime.isBefore(endLastByronSlotTime)) {
-      return utcTimeToEpochNo(Byron, utcTime);
-    }
-
-    var lastByronEpoch = genesisConfig.lastByronEpochNo();
-    var lastByronTime = slotsConversions.slotToTime(genesisConfig.lastByronSlot());
-    var endLastByronTime = lastByronTime.plus(genesisConfig.getByronSlotLength());
-
-    var diffDuration = Duration.between(endLastByronTime, utcTime);
-    var diffDurationSeconds = diffDuration.getSeconds();
-    var slotsPerEpoch = genesisConfig.slotsPerEpoch(Shelley);
-    var shelleyEraLength = genesisConfig.getShelleySlotLength();
-    var shelleyEraLengthSeconds = shelleyEraLength.getSeconds();
-
-    var shelleyEpochs =
-        (int) Math.ceil((double) diffDurationSeconds / slotsPerEpoch / shelleyEraLengthSeconds);
-
-    return lastByronEpoch + shelleyEpochs;
-  }
-
-  int utcTimeToEpochNo(EraType era, LocalDateTime utcTime) {
-    var diffDuration = Duration.between(genesisConfig.getStartTime(), utcTime);
-    var diffDurationSeconds = diffDuration.getSeconds();
-    var slotsPerEpoch = genesisConfig.slotsPerEpoch(era);
-    var byronSlotsLength = genesisConfig.getByronSlotLength();
-    var byronSlotsLengthSeconds = byronSlotsLength.getSeconds();
-
-    return (int)
-        Math.ceil((double) (diffDurationSeconds / slotsPerEpoch / byronSlotsLengthSeconds));
+    return slotConversions.slotToEpoch(toSlot(utcTime)).intValue();
   }
 
   /**
-   * @param utcTime the time to convert into a slot
-   * @return the slot corresponding the time passed as input (this might not coincide with a block)
+   * @param utcTime the time to convert into a slot, must not be before the network start time
+   * @return the slot containing the time passed as input (this might not coincide with a block)
    */
   public Long toSlot(LocalDateTime utcTime) {
-
     if (utcTime.isBefore(genesisConfig.getStartTime())) {
-      throw new IllegalArgumentException("Required that falls before start of the blockchain");
-    } else if (utcTime.isBefore(genesisConfig.getShelleyStartTime())) {
+      throw new IllegalArgumentException(
+          "time: %s falls before the start of the blockchain: %s"
+              .formatted(utcTime, genesisConfig.getStartTime()));
+    }
+
+    if (utcTime.isBefore(genesisConfig.getShelleyStartTime())) {
       var secondsSinceByronBegin =
           ChronoUnit.SECONDS.between(genesisConfig.getStartTime(), utcTime);
+
       return secondsSinceByronBegin / genesisConfig.slotDuration(Byron).getSeconds();
-    } else {
-      var secondsSinceShelleyBegin =
-          ChronoUnit.SECONDS.between(genesisConfig.getShelleyStartTime(), utcTime);
-      return genesisConfig.firstShelleySlot()
-          + secondsSinceShelleyBegin / genesisConfig.slotDuration(Shelley).getSeconds();
     }
+
+    var secondsSinceShelleyBegin =
+        ChronoUnit.SECONDS.between(genesisConfig.getShelleyStartTime(), utcTime);
+
+    return genesisConfig.firstShelleySlot()
+        + secondsSinceShelleyBegin / genesisConfig.slotDuration(Shelley).getSeconds();
   }
 }

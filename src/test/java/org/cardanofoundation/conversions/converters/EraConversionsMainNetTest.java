@@ -2,6 +2,7 @@ package org.cardanofoundation.conversions.converters;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.cardanofoundation.conversions.domain.EraType.Babbage;
+import static org.cardanofoundation.conversions.domain.EraType.Byron;
 import static org.cardanofoundation.conversions.domain.EraType.Shelley;
 import static org.cardanofoundation.conversions.domain.NetworkType.MAINNET;
 
@@ -45,7 +46,23 @@ class EraConversionsMainNetTest {
 
   @Test
   void lastRealSlotBabbage() {
-    assertThat(eraConversions.lastRealEraTime(Babbage)).isEmpty();
+    // https://cardanoscan.io/block/10781330 - the last Babbage block on mainnet
+    assertThat(eraConversions.lastRealSlot(Babbage)).contains(133660799L);
+  }
+
+  @Test
+  void lastTheoreticalSlotBabbage() {
+    assertThat(eraConversions.lastTheoreticalSlot(Babbage)).contains(133660799L);
+  }
+
+  @Test
+  void lastRealSlotByron() {
+    assertThat(eraConversions.lastRealSlot(Byron)).contains(4492799L);
+  }
+
+  @Test
+  void lastTheoreticalSlotByron() {
+    assertThat(eraConversions.lastTheoreticalSlot(Byron)).contains(4492799L);
   }
 
   @Test
@@ -74,6 +91,7 @@ class EraConversionsMainNetTest {
 
   @Test
   void lastRealEraTimeBabbage() {
-    assertThat(eraConversions.lastRealEraTime(Babbage)).isEmpty();
+    assertThat(eraConversions.lastRealEraTime(Babbage))
+        .contains(LocalDateTime.of(2024, 9, 1, 21, 44, 50));
   }
 }

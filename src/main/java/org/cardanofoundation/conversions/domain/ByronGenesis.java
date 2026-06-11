@@ -20,12 +20,14 @@ public class ByronGenesis {
   public static final String ATTR_SLOT_DURATION = "slotDuration";
   public static final String ATTR_PROTOCOL_CONSTS = "protocolConsts";
   public static final String ATTR_PROTOCOL_MAGIC = "protocolMagic";
+  public static final String ATTR_SECURITY_PARAM = "k";
 
   private final ObjectMapper objectMapper;
 
   private long startTime;
   private long byronSlotLength;
   private long protocolMagic;
+  private long securityParam;
 
   public ByronGenesis(InputStream is, ObjectMapper objectMapper) {
     this.objectMapper = objectMapper;
@@ -44,6 +46,7 @@ public class ByronGenesis {
             / 1000; // in second
 
     protocolMagic = byronJsonNode.get(ATTR_PROTOCOL_CONSTS).get(ATTR_PROTOCOL_MAGIC).asLong();
+    securityParam = byronJsonNode.get(ATTR_PROTOCOL_CONSTS).get(ATTR_SECURITY_PARAM).asLong();
 
     log.debug("startTime: {}", startTime);
     log.debug("byronSlotLength: {}", byronSlotLength);
