@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.2.1...v2.0.0) (2026-07-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* SlotConversions.slotToEpoch returns int (was Long) and TimeConversions.toSlot returns long (was Long). Call sites using the values arithmetically are source compatible; call sites storing the boxed Long need a recompile/adjustment.
+
+### Bug Fixes
+
+* epoch off-by-one at every epoch boundary in utcTimeToEpochNo ([#31](https://github.com/cardano-foundation/cf-cardano-conversions-java/issues/31)) ([d85083b](https://github.com/cardano-foundation/cf-cardano-conversions-java/commit/d85083b691228d67afcc21f0139b5b212b5f8390))
+
 ## [1.2.1](https://github.com/cardano-foundation/cf-cardano-conversions-java/compare/v1.2.0...v1.2.1) (2025-10-02)
 
 
