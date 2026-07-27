@@ -24,4 +24,15 @@ public class EraHistory {
         .filter(eraHistoryItem -> eraHistoryItem.era().eraType() == eraType)
         .findFirst();
   }
+
+  /**
+   * Returns the last era history item of a given era. An era can span multiple items (one per
+   * intra-era protocol version bump), so questions about the end of an era must be answered from
+   * the last item, not the first one.
+   */
+  public Optional<EraHistoryItem> findLastByEra(EraType eraType) {
+    return all().stream()
+        .filter(eraHistoryItem -> eraHistoryItem.era().eraType() == eraType)
+        .reduce((first, second) -> second);
+  }
 }

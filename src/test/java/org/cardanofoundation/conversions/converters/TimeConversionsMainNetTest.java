@@ -60,6 +60,38 @@ class TimeConversionsMainNetTest {
   }
 
   @Test
+  public void testFirstSecondOfShelleyEpochBelongsToThatEpoch() {
+    // first second of epoch 208 (Shelley start)
+    assertThat(timeConversions.utcTimeToEpochNo(LocalDateTime.of(2020, 7, 29, 21, 44, 51)))
+        .isEqualTo(208);
+    // first second of epoch 209
+    assertThat(timeConversions.utcTimeToEpochNo(LocalDateTime.of(2020, 8, 3, 21, 44, 51)))
+        .isEqualTo(209);
+    // first second of epoch 636 (recent epoch, June 2026)
+    assertThat(timeConversions.utcTimeToEpochNo(LocalDateTime.of(2026, 6, 8, 21, 44, 51)))
+        .isEqualTo(636);
+    // last second of epoch 635
+    assertThat(timeConversions.utcTimeToEpochNo(LocalDateTime.of(2026, 6, 8, 21, 44, 50)))
+        .isEqualTo(635);
+    // sub-second times around the boundary
+    assertThat(
+            timeConversions.utcTimeToEpochNo(
+                LocalDateTime.of(2026, 6, 8, 21, 44, 50).withNano(999_999_999)))
+        .isEqualTo(635);
+    assertThat(
+            timeConversions.utcTimeToEpochNo(
+                LocalDateTime.of(2026, 6, 8, 21, 44, 51).withNano(500_000_000)))
+        .isEqualTo(636);
+  }
+
+  @Test
+  public void utcTimeToEpochNoBeforeBlockchainStartThrowsError() {
+    Assertions.assertThrows(
+        IllegalArgumentException.class,
+        () -> timeConversions.utcTimeToEpochNo(LocalDateTime.of(2015, 10, 3, 21, 44, 11)));
+  }
+
+  @Test
   public void dateTimeToSlotBeforeBlockchainStartThrowsError() {
     Assertions.assertThrows(
         IllegalArgumentException.class,

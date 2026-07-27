@@ -37,6 +37,9 @@ public class GenesisConfig {
 
   @Getter private long shelleyEpochLength;
 
+  /** Byron epoch length in slots, i.e. 10 * k (security parameter) per the Byron specification. */
+  @Getter private long byronEpochLength;
+
   @Getter private BigInteger maxLovelaceSupply;
 
   @Getter private long protocolNetworkMagic;
@@ -52,6 +55,10 @@ public class GenesisConfig {
     var byronGenesis = parseByronGenesisFile(conversionsConfig.genesisPaths().byronLink());
     var shelleyGenesis = parseShelleyGenesisFile(conversionsConfig.genesisPaths().shelleyLink());
 
+    validate(byronGenesis, shelleyGenesis);
+  }
+
+  private void validate(ByronGenesis byronGenesis, ShelleyGenesis shelleyGenesis) {
     var distinctProtocolMagics =
         Stream.of(
                 byronGenesis.getProtocolMagic(),
@@ -63,6 +70,34 @@ public class GenesisConfig {
     if (distinctProtocolMagics != 1) {
       throw new ConversionRuntimeException(
           "Protocol magics mismatch, only one distinct networkProtocolMagic allowed!");
+    }
+
+    // both genesis files declare the chain start; they must agree
+    var shelleySystemStart = Instant.parse(shelleyGenesis.getSystemStart());
+    var byronStart = Instant.ofEpochSecond(byronGenesis.getStartTime());
+    if (!shelleySystemStart.equals(byronStart)) {
+      throw new ConversionRuntimeException(
+          "Genesis files disagree on the network start time, byron: %s, shelley systemStart: %s"
+              .formatted(byronStart, shelleySystemStart));
+    }
+
+    // the two-phase (Byron then Shelley) conversion model relies on Byron epochs having the same
+    // wall-clock duration as Shelley epochs; this holds on all Cardano networks
+    var byronEpochDuration = byronSlotLength.multipliedBy(byronEpochLength);
+    var shelleyEpochDuration = shelleySlotLength.multipliedBy(shelleyEpochLength);
+    if (!byronEpochDuration.equals(shelleyEpochDuration)) {
+      throw new ConversionRuntimeException(
+          "Byron epoch duration: %s does not match Shelley epoch duration: %s"
+              .formatted(byronEpochDuration, shelleyEpochDuration));
+    }
+
+    var networkTypeEpochLength = conversionsConfig.networkType().getEpochLengthInSlots();
+    if (networkTypeEpochLength != shelleyEpochLength) {
+      log.warn(
+          "NetworkType epoch length: {} does not match shelley genesis epochLength: {},"
+              + " genesis file wins",
+          networkTypeEpochLength,
+          shelleyEpochLength);
     }
   }
 
@@ -103,20 +138,33 @@ public class GenesisConfig {
     return shelleySlotLength;
   }
 
+  /**
+   * Number of slots per epoch in a given era, taken from the genesis files: 10 * k for Byron,
+   * epochLength for Shelley and later eras.
+   */
   public long slotsPerEpoch(EraType era) {
-    return (conversionsConfig.networkType().getEpochLengthInSlots()
-        / slotDuration(era).getSeconds());
+    if (era == Byron) {
+      return byronEpochLength;
+    }
+
+    return shelleyEpochLength;
   }
 
   public int lastByronEpochNo() {
     return firstShelleyEpochNo() - 1;
   }
 
+  /**
+   * First epoch of the post-Byron phase. Networks that never ran Byron (e.g. preview, which
+   * launched directly in Alonzo) start in a later era, so this is the start epoch of the first
+   * non-Byron era history item.
+   */
   public int firstShelleyEpochNo() {
-    return eraHistory
-        .findFirstByEra(Shelley)
+    return eraHistory.all().stream()
+        .filter(item -> item.era().eraType() != Byron)
+        .findFirst()
         .map(EraHistoryItem::startEpochNo)
-        .orElseThrow(() -> new ConversionRuntimeException("Shelley era not found!"));
+        .orElseThrow(() -> new ConversionRuntimeException("No post-Byron era found!"));
   }
 
   public long lastByronSlot() {
@@ -132,6 +180,7 @@ public class GenesisConfig {
 
     cardanoNetworkStartTime = byronGenesis.getStartTime();
     byronSlotLength = byronGenesis.getByronSlotLength(); // in second
+    byronEpochLength = 10 * byronGenesis.getSecurityParam();
     protocolNetworkMagic = byronGenesis.getProtocolMagic();
 
     log.debug("Cardano network start time: {}", getStartTime());
@@ -147,7 +196,6 @@ public class GenesisConfig {
     activeSlotsCoeff = shelleyGenesis.getActiveSlotsCoeff();
     maxLovelaceSupply = shelleyGenesis.getMaxLovelaceSupply();
     shelleyEpochLength = shelleyGenesis.getEpochLength();
-    protocolNetworkMagic = shelleyGenesis.getNetworkMagic();
 
     log.debug("Shelley slot length: {}", shelleySlotLength);
     log.debug("Active slots coeff: {}", activeSlotsCoeff);

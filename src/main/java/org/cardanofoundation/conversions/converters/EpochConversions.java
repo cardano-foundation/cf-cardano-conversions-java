@@ -38,47 +38,28 @@ public final class EpochConversions {
    * @return absolute slot of the end of an epoch
    */
   public long endingOfEpochToAbsoluteSlot(int epochNo) {
-    return epochToAbsoluteSlot(epochNo);
+    return epochToAbsoluteSlot(epochNo, END);
   }
 
   /**
    * Converts epoch number to absolute slot.
    *
    * @param epochNo - epoch number, e.g. 208
-   * @param epochOffset - either epoch's start or epoch's end
+   * @param epochOffset - either epoch's start (first slot) or epoch's end (last slot)
    * @return absolute slot of a given epoch
    */
   public long epochToAbsoluteSlot(int epochNo, EpochOffset epochOffset) {
-    return switch (epochOffset) {
-      case START -> {
-        if (epochNo <= genesisConfig.lastByronEpochNo()) {
-          yield (absoluteSlotAssumingEra(EraType.Byron, epochNo)
-                  - genesisConfig.slotsPerEpoch(Byron))
-              + 1;
-        }
-
-        yield (epochToAbsoluteSlot(epochNo) - genesisConfig.slotsPerEpoch(Shelley)) + 1;
-      }
-      case END -> epochToAbsoluteSlot(epochNo);
-    };
-  }
-
-  /**
-   * Canonical implementation of epochToAbsoluteSlot function.
-   *
-   * @param epochNo epoch number
-   * @return absolute slot
-   */
-  long epochToAbsoluteSlot(int epochNo) {
-    if (epochNo <= genesisConfig.lastByronEpochNo()) {
-      return absoluteSlotAssumingEra(Byron, epochNo);
+    if (epochNo < 0) {
+      throw new IllegalArgumentException("epochNo cannot be negative");
     }
 
-    var firstShelleySlot = genesisConfig.firstShelleySlot();
+    var era = epochNo <= genesisConfig.lastByronEpochNo() ? Byron : Shelley;
+    var firstSlot = firstSlotOfEpoch(epochNo);
 
-    var postByronEpochs = (epochNo - genesisConfig.lastByronEpochNo() - 1);
-
-    return firstShelleySlot + absoluteSlotAssumingEra(Shelley, postByronEpochs);
+    return switch (epochOffset) {
+      case START -> firstSlot;
+      case END -> firstSlot + genesisConfig.slotsPerEpoch(era) - 1;
+    };
   }
 
   /**
@@ -92,7 +73,8 @@ public final class EpochConversions {
   }
 
   /**
-   * Converts epoch number to the UTC Time at the end of a given epoch
+   * Converts epoch number to the UTC Time at the end of a given epoch, i.e. the time at which the
+   * last slot of the epoch starts.
    *
    * @param epochNo epoch number
    * @return UTC time
@@ -106,7 +88,7 @@ public final class EpochConversions {
    *
    * @param epochNo - epoch number, e.g. 208
    * @param epochOffset - either epoch's start or epoch's end
-   * @return UTC time of a given epoch
+   * @return UTC time of a given epoch's first (START) or last (END) slot
    */
   public LocalDateTime epochToUTCTime(int epochNo, EpochOffset epochOffset) {
     var absoluteSlot = epochToAbsoluteSlot(epochNo, epochOffset);
@@ -115,47 +97,44 @@ public final class EpochConversions {
   }
 
   /**
-   * Returns absolute slot but assuming one is in particular era.
+   * Returns the first absolute slot of a given epoch.
    *
-   * @param era - cardano era e.g. Byron, Shelley
-   * @param epochNo - epoch number, e.g. 208
-   * @param epochOffset - start or end of a given epoch
-   * @return absolute slot of a given epoch
+   * <p>Byron epochs lie back to back from slot 0; Shelley(+) epochs lie back to back from the first
+   * Shelley slot. The Byron-to-Shelley transition happened on an epoch boundary on every network,
+   * so the two segments are contiguous.
    */
-  long absoluteSlotAssumingEra(EraType era, int epochNo, EpochOffset epochOffset) {
-    long allSlotsPerEra = genesisConfig.slotsPerEpoch(era) * epochNo;
+  private long firstSlotOfEpoch(int epochNo) {
+    if (epochNo <= genesisConfig.lastByronEpochNo()) {
+      return epochNo * genesisConfig.slotsPerEpoch(Byron);
+    }
 
-    return switch (epochOffset) {
-      case START -> allSlotsPerEra;
-      case END -> absoluteSlotAssumingEra(era, epochNo);
-    };
-  }
+    var postByronEpochs = epochNo - genesisConfig.firstShelleyEpochNo();
 
-  long absoluteSlotAssumingEra(EraType era, int epochNo) {
-    long allSlotsPerEra = genesisConfig.slotsPerEpoch(era) * epochNo;
-
-    return allSlotsPerEra + ((genesisConfig.slotsPerEpoch(era)) - 1);
+    return genesisConfig.firstShelleySlot()
+        + postByronEpochs * genesisConfig.slotsPerEpoch(Shelley);
   }
 
   /**
-   * Returns first slot of a given epoch based on era.
+   * Returns first slot of a given epoch, assuming the whole chain ran with the slot/epoch
+   * parameters of the given era.
    *
    * @param era - cardano era e.g. Byron, Shelley
    * @param epochNo - epoch number, e.g. 208
    * @return first slot of a given epoch
    */
   long firstEpochSlot(EraType era, int epochNo) {
-    return absoluteSlotAssumingEra(era, epochNo, START);
+    return genesisConfig.slotsPerEpoch(era) * epochNo;
   }
 
   /**
-   * Returns last slot of a given epoch based on era.
+   * Returns last slot of a given epoch, assuming the whole chain ran with the slot/epoch parameters
+   * of the given era.
    *
    * @param era - cardano era e.g. Byron, Shelley
    * @param epochNo - epoch number, e.g. 208
    * @return last slot of a given epoch
    */
   long lastEpochSlot(EraType era, int epochNo) {
-    return absoluteSlotAssumingEra(era, epochNo, END);
+    return firstEpochSlot(era, epochNo) + genesisConfig.slotsPerEpoch(era) - 1;
   }
 }

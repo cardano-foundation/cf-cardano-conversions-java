@@ -17,19 +17,19 @@ public class EraConversions {
   private final SlotConversions slotConversions;
 
   public long firstRealSlot(EraType eraType) {
-    return getEraHistoryItem(eraType).firstRealSlotNo();
+    return getFirstEraHistoryItem(eraType).firstRealSlotNo();
   }
 
   public long firstTheoreticalSlot(EraType eraType) {
-    return getEraHistoryItem(eraType).firstTheoreticalSlotNo();
+    return getFirstEraHistoryItem(eraType).firstTheoreticalSlotNo();
   }
 
   public Optional<Long> lastTheoreticalSlot(EraType eraType) {
-    return getEraHistoryItem(eraType).lastTheoreticalSlotNo();
+    return getLastEraHistoryItem(eraType).lastTheoreticalSlotNo();
   }
 
   public Optional<Long> lastRealSlot(EraType eraType) {
-    return getEraHistoryItem(eraType).lastRealSlotNo();
+    return getLastEraHistoryItem(eraType).lastRealSlotNo();
   }
 
   public LocalDateTime firstRealEraTime(EraType eraType) {
@@ -52,10 +52,18 @@ public class EraConversions {
     return lastTheoreticalSlot(eraType).map(slotConversions::slotToTime);
   }
 
-  private EraHistoryItem getEraHistoryItem(EraType eraType) {
+  private EraHistoryItem getFirstEraHistoryItem(EraType eraType) {
     return genesisConfig
         .getEraHistory()
         .findFirstByEra(eraType)
+        .orElseThrow(
+            () -> new ConversionRuntimeException("Era details not found!, era: " + eraType));
+  }
+
+  private EraHistoryItem getLastEraHistoryItem(EraType eraType) {
+    return genesisConfig
+        .getEraHistory()
+        .findLastByEra(eraType)
         .orElseThrow(
             () -> new ConversionRuntimeException("Era details not found!, era: " + eraType));
   }
